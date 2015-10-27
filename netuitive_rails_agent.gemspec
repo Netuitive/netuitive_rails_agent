@@ -11,4 +11,5 @@ Gem::Specification.new do |s|
   s.homepage    =
     'http://rubygems.org/gems/netuitive_rails_agent'
   s.license       = 'Apache v2.0'
+  s.add_runtime_dependency 'netuitive_ruby_api', '>= 0.9.0'
 end
