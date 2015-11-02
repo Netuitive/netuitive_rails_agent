@@ -1,7 +1,5 @@
 class ConfigManager
 
-	attr_accessor :interval
-
 	def initialize()
 		@error=0
 		@info=1
@@ -33,7 +31,6 @@ class ConfigManager
 	def readConfig()
 		gem_root= File.expand_path("../../..", __FILE__)
 		data=YAML.load_file "#{gem_root}/config/agent.yml"
-		@interval=data["interval"]
 		debugLevelString=data["debugLevel"]
 		if debugLevelString == "error"
 			@debugLevel=@error
@@ -47,7 +44,6 @@ class ConfigManager
 
 		if isDebug?
 			puts "read config file. Results: 
-			interval: #{interval}
 			debugLevel: #{debugLevelString}"
 		end
 	end

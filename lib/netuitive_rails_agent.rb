@@ -1,6 +1,5 @@
 require 'netuitive_ruby_api'
 require 'active_support/all'
-require 'netuitive/scheduler'
 require 'netuitive/action_controller'
 require 'netuitive/active_record'
 require 'netuitive/action_view'
@@ -14,5 +13,3 @@ NetuitiveActionViewSub::subscribe
 NetuitiveActionMailer::subscribe
 NetuitiveActiveSupportSub::subscribe
 NetuitiveActiveJobSub::subscribe
-scheduler = Scheduler.new
-scheduler.startSchedule
