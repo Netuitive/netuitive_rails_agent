@@ -1,2 +1,1 @@
-interval: 60 #interval in seconds to send metrics to netuitive
 debugLevel: error #options (in ascending order of debugness) are: error, info, debug

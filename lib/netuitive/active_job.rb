@@ -1,10 +1,22 @@
 module NetuitiveActiveJobSub
-  def self.subscribe
-    ActiveSupport::Notifications.subscribe /enqueue.active_job/ do |*args| 
-      NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_job.enqueue", 1)
-    end
-    ActiveSupport::Notifications.subscribe /perform.active_job/ do |*args| 
-      NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_job.perform", 1)
-    end
-  end
+	def self.subscribe
+		ActiveSupport::Notifications.subscribe /enqueue.active_job/ do |*args| 
+			begin
+				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_job.enqueue", 1)
+			rescue
+				if ConfigManager.isError?
+					puts "failure to communicate to netuitived"
+				end
+			end
+		end
+		ActiveSupport::Notifications.subscribe /perform.active_job/ do |*args| 
+			begin
+				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_job.perform", 1)
+			rescue
+				if ConfigManager.isError?
+					puts "failure to communicate to netuitived"
+				end
+			end
+		end
+	end
 end  
