@@ -1,1 +1,2 @@
-debugLevel: error #options (in ascending order of debugness) are: error, info, debug
+#all are configurable using environment variables
+debugLevel: error #options (in ascending order of debugness) are: error, info, debug. environment variable: NETUITIVE_RAILS_DEBUG_LEVEL
