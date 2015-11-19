@@ -9,7 +9,10 @@ class ConfigManager
 		def readConfig()
 			gem_root= File.expand_path("../../..", __FILE__)
 			data=YAML.load_file "#{gem_root}/config/agent.yml"
-			debugLevelString=data["debugLevel"]
+			debugLevelString=ENV["NETUITIVE_RAILS_DEBUG_LEVEL"]
+			if(debugLevelString == nil or debugLevelString == "")
+				debugLevelString=data["debugLevel"]
+			end
 			if debugLevelString == "error"
 				NetuitiveLogger.log.level = Logger::ERROR
 			elsif debugLevelString == "info"
