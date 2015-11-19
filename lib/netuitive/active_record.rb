@@ -4,9 +4,7 @@ module NetuitiveActiveRecordSub
 			begin
 				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_record.instantiation", 1)
 			rescue
-				if ConfigManager.isError?
-					puts "failure to communicate to netuitived"
-				end
+				NetuitiveLogger.log.error "failure to communicate to netuitived"
 			end
 		end
 		
@@ -14,9 +12,7 @@ module NetuitiveActiveRecordSub
 			begin
 				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_record.sql.statement", 1)
 			rescue
-				if ConfigManager.isError?
-					puts "failure to communicate to netuitived"
-				end
+				NetuitiveLogger.log.error "failure to communicate to netuitived"
 			end
 		end
 	end

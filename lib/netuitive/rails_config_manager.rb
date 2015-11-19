@@ -1,40 +1,9 @@
+require 'netuitive/netuitive_rails_logger'
 class ConfigManager
 
 	class << self
 		def setup()
-			@@error=0
-			@@info=1
-			@@debug=2
 			readConfig()
-		end
-
-		def netuitivedAddr
-			@@netuitivedAddr
-		end
-
-		def netuitivedPort
-			@@netuitivedPort
-		end
-
-		def isDebug?
-			if @@debugLevel >= @@debug
-				return true
-			end
-			return false
-		end
-
-		def isInfo?
-			if @@debugLevel >= @@info
-				return true
-			end
-			return false
-		end
-
-		def isError?
-			if @@debugLevel >= @@error
-				return true
-			end
-			return false
 		end
 
 		def readConfig()
@@ -42,21 +11,16 @@ class ConfigManager
 			data=YAML.load_file "#{gem_root}/config/agent.yml"
 			debugLevelString=data["debugLevel"]
 			if debugLevelString == "error"
-				@@debugLevel=@@error
+				NetuitiveLogger.log.level = Logger::ERROR
 			elsif debugLevelString == "info"
-				@@debugLevel=@@info
+				NetuitiveLogger.log.level = Logger::INFO
 			elsif debugLevelString == "debug"
-				@@debugLevel=@@debug
+				NetuitiveLogger.log.level = Logger::DEBUG
 			else
-				@@debugLevel=@@error
+				NetuitiveLogger.log.level = Logger::ERROR
 			end
-
-			if isDebug?
-				puts "read config file. Results: 
-				netuitivedAddr: #{@@netuitivedAddr}
-				netuitivedPort: #{@@netuitivedPort}
+			NetuitiveLogger.log.debug "read config file. Results: 
 				debugLevel: #{debugLevelString}"
-			end
 		end
 	end
 end 

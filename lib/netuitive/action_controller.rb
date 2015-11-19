@@ -1,3 +1,4 @@
+require 'netuitive/netuitive_rails_logger'
 module NetuitiveActionControllerSub
   def self.subscribe
     ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |*args| 
@@ -14,54 +15,42 @@ module NetuitiveActionControllerSub
         NetuitiveRubyAPI::netuitivedServer.addSample("#{controller}.#{action}.request.query_time", event.payload[:db_runtime])
         NetuitiveRubyAPI::netuitivedServer.addSample("#{controller}.#{action}.request.view_time", event.payload[:view_runtime])
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+          NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
     ActiveSupport::Notifications.subscribe /write_fragment.action_controller/ do |*args| 
       begin
         NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.write_fragment", 1)
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+          NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
     ActiveSupport::Notifications.subscribe /read_fragment.action_controller/ do |*args| 
       begin
         NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.read_fragment", 1)
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+          NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
     ActiveSupport::Notifications.subscribe /expire_fragment.action_controller/ do |*args| 
       begin
         NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.expire_fragment", 1)
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+          NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
     ActiveSupport::Notifications.subscribe /write_page.action_controller/ do |*args| 
       begin
         NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.write_page", 1)
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+          NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
     ActiveSupport::Notifications.subscribe /expire_page.action_controller/ do |*args| 
       begin
         NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.expire_page", 1)
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+        NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
     ActiveSupport::Notifications.subscribe /send_file.action_controller/ do |*args| 
