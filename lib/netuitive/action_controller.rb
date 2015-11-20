@@ -57,27 +57,21 @@ module NetuitiveActionControllerSub
       begin
         NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.sent_file", 1)
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+        NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
     ActiveSupport::Notifications.subscribe /redirect_to.action_controller/ do |*args| 
       begin
         NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.redirect", 1)
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+        NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
     ActiveSupport::Notifications.subscribe /halted_callback.action_controller/ do |*args| 
       begin
         NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.halted_callback", 1)
       rescue
-        if ConfigManager.isError?
-          puts "failure to communicate to netuitived"
-        end
+        NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
     end
   end
