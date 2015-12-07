@@ -11,9 +11,12 @@ module NetuitiveActionControllerSub
       status = event.payload[:status]
       tags = [controller, action, format, host] 
       begin
-        NetuitiveRubyAPI::netuitivedServer.addSample("#{controller}.#{action}.request.total_duration", event.duration)
-        NetuitiveRubyAPI::netuitivedServer.addSample("#{controller}.#{action}.request.query_time", event.payload[:db_runtime])
-        NetuitiveRubyAPI::netuitivedServer.addSample("#{controller}.#{action}.request.view_time", event.payload[:view_runtime])
+        NetuitiveRubyAPI::netuitivedServer.addSample("action_controller.#{controller}.#{action}.request.total_duration", event.duration)
+        NetuitiveRubyAPI::netuitivedServer.addSample("action_controller.#{controller}.#{action}.request.query_time", event.payload[:db_runtime])
+        NetuitiveRubyAPI::netuitivedServer.addSample("action_controller.#{controller}.#{action}.request.view_time", event.payload[:view_runtime])
+        NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.#{controller}.#{action}.total_requests", 1)
+        NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.#{controller}.total_requests", 1)
+        NetuitiveRubyAPI::netuitivedServer.aggregateMetric("action_controller.total_requests", 1)
       rescue
           NetuitiveLogger.log.error "failure to communicate to netuitived"
       end
