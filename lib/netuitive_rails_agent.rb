@@ -7,6 +7,7 @@ require 'netuitive/action_mailer'
 require 'netuitive/active_support'
 require 'netuitive/active_job'
 require 'netuitive/rails_config_manager'
+require 'netuitive/scheduler'
 
 NetuitiveActionControllerSub::subscribe
 NetuitiveActiveRecordSub::subscribe
@@ -16,3 +17,4 @@ NetuitiveActiveSupportSub::subscribe
 NetuitiveActiveJobSub::subscribe
 
 ConfigManager::setup
+Scheduler::startSchedule
