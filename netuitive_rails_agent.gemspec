@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'netuitive_rails_agent'
-  s.version     = '0.9.8'
-  s.date        = '2015-12-30'
+  s.version     = '0.9.9'
+  s.date        = '2016-01-04'
   s.summary     = "Rails metrics for Netuitive's API"
   s.description = "Automatically generates Rails metrics for submission to Netuitive's API"
   s.authors     = ["John King"]
