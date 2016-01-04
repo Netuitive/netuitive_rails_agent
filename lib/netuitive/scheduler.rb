@@ -1,6 +1,5 @@
 require 'netuitive/netuitive_rails_logger'
 require 'netuitive/gc'
-require 'netuitive/rubyvm'
 require 'netuitive/objectspace'
 class Scheduler
 	def self.startSchedule
