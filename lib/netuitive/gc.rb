@@ -4,13 +4,17 @@ class GCStatsCollector
 		if GC::Profiler.enabled?
 			begin
 				GC.stat.each do |key, value|
-					if key == "total_allocated_object" or key == "total_freed_object" or key == "count"
-						NetuitiveRubyAPI::netuitivedServer.addCounterSample("GC.stat.#{key}", value)
+					NetuitiveLogger.log.debug "GC stat key: #{key}"
+					if key.to_s == "total_allocated_object" or key.to_s == "total_freed_object" or key.to_s == "count"
+						NetuitiveLogger.log.debug "sending aggregateCounterMetric GC.stat.#{key}"
+						NetuitiveRubyAPI::netuitivedServer.aggregateCounterMetric("GC.stat.#{key}", value)
 					else
+						NetuitiveLogger.log.debug "sending aggregateMetric GC.stat.#{key}"
 						NetuitiveRubyAPI::netuitivedServer.aggregateMetric("GC.stat.#{key}", value)
 					end
 				end
-				NetuitiveRubyAPI::netuitivedServer.addCounterSample("GC.profiler.total_time", GC::Profiler.total_time)
+				NetuitiveLogger.log.debug "sending aggregateCounterMetric GC.profiler.total_time"
+				NetuitiveRubyAPI::netuitivedServer.aggregateCounterMetric("GC.profiler.total_time", GC::Profiler.total_time)
 			rescue
 				NetuitiveLogger.log.error "failure to communicate to netuitived"
 			end
