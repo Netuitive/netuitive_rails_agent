@@ -6,7 +6,7 @@ class ObjectSpaceStatsCollector
 				NetuitiveLogger.log.debug "ObjectSpace.count_objects.#{key}"
 				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("ObjectSpace.count_objects.#{key}", value)
 			end
-		rescue
+		rescue 
 			NetuitiveLogger.log.error "failure to communicate to netuitived"
 		end
 	end

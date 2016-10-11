@@ -1,15 +1,20 @@
 require 'netuitive/netuitive_rails_logger'
+require 'netuitive/error_tracker'
+require 'netuitive/request_data'
+require 'action_controller'
+
+class ActionController::Base
+  include ErrorTrackerHook
+  include RequestDataHook
+  before_action :netuitiveRequestHook
+end
+
 module NetuitiveActionControllerSub
   def self.subscribe
     ActiveSupport::Notifications.subscribe /process_action.action_controller/ do |*args| 
       event = ActiveSupport::Notifications::Event.new(*args)
       controller = "#{event.payload[:controller]}"
       action = "#{event.payload[:action]}"
-      format = "format:#{event.payload[:format] || 'all'}"
-      format = "format:all" if format == "format:*/*" 
-      host = "host:#{ENV['INSTRUMENTATION_HOSTNAME']}"
-      status = event.payload[:status]
-      tags = [controller, action, format, host] 
       begin
         NetuitiveRubyAPI::netuitivedServer.addSample("action_controller.#{controller}.#{action}.request.total_duration", event.duration)
         NetuitiveRubyAPI::netuitivedServer.addSample("action_controller.#{controller}.#{action}.request.query_time", event.payload[:db_runtime])
