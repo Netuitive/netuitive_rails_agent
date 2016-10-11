@@ -14,6 +14,10 @@ class ConfigManager
 			@@ignoredErrors
 		end
 
+		def queueTimeDivisor
+			@@queueTimeDivisor
+		end
+
 		def readConfig()
 			gem_root= File.expand_path("../../..", __FILE__)
 			data=YAML.load_file "#{gem_root}/config/agent.yml"
@@ -39,6 +43,13 @@ class ConfigManager
 				@@captureErrors = exceptionString.casecmp("true") == 0
 			end
 
+			divisorString=ENV["NETUITIVE_RAILS_QUEUE_TIME_UNITS"] == nil ? nil : ENV["NETUITIVE_RAILS_QUEUE_TIME_UNITS"]
+			if(divisorString == nil or divisorString == "")
+				@@queueTimeDivisor = data["queueTimeUnits"].to_f
+			else
+				@@queueTimeDivisor = divisorString.to_f
+			end
+
 			@@ignoredErrors = Array.new
 			ignoredExceptionString=ENV["NETUITIVE_RAILS_IGNORED_ERRORS"] == nil ? nil : ENV["NETUITIVE_RAILS_IGNORED_ERRORS"].dup
 			if(ignoredExceptionString == nil or ignoredExceptionString == "")
@@ -55,7 +66,8 @@ class ConfigManager
 			NetuitiveLogger.log.debug "read config file. Results: 
 				debugLevel: #{debugLevelString}
 				captureErrors: #{@@captureErrors},
-				ignoredErrors: #{ignoredErrors}"
+				ignoredErrors: #{ignoredErrors},
+				queueTimeDivisor: #{queueTimeDivisor}"
 		end
 	end
 end 

@@ -1,3 +1,5 @@
+require 'netuitive/rails_config_manager'
+
 module RequestDataHook 
 
   include ControllerUtils
@@ -14,7 +16,7 @@ module RequestDataHook
         HEADERS_NAMES.each do |headerName|
           header = headers[headerName]
           if header != nil
-            headerTime = header.to_f/1000.0
+            headerTime = header.to_f/ConfigManager.queueTimeDivisor
             NetuitiveLogger.log.debug "queue headerTime: #{headerTime}"
             startTime = (startTime == nil || headerTime < startTime) ? headerTime : startTime
             NetuitiveLogger.log.debug "queue startTime: #{startTime}"
