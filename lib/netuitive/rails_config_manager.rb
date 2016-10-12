@@ -1,73 +1,73 @@
 require 'netuitive/netuitive_rails_logger'
 class ConfigManager
 
-	class << self
-		def setup()
-			readConfig()
-		end
+  class << self
+    def setup()
+      readConfig()
+    end
 
-		def captureErrors
-			@@captureErrors
-		end
+    def captureErrors
+      @@captureErrors
+    end
 
-		def ignoredErrors
-			@@ignoredErrors
-		end
+    def ignoredErrors
+      @@ignoredErrors
+    end
 
-		def queueTimeDivisor
-			@@queueTimeDivisor
-		end
+    def queueTimeDivisor
+      @@queueTimeDivisor
+    end
 
-		def readConfig()
-			gem_root= File.expand_path("../../..", __FILE__)
-			data=YAML.load_file "#{gem_root}/config/agent.yml"
-			debugLevelString=ENV["NETUITIVE_RAILS_DEBUG_LEVEL"]
-			if(debugLevelString == nil or debugLevelString == "")
-				debugLevelString=data["debugLevel"]
-			end
-			if debugLevelString == "error"
-				NetuitiveLogger.log.level = Logger::ERROR
-			elsif debugLevelString == "info"
-				NetuitiveLogger.log.level = Logger::INFO
-			elsif debugLevelString == "debug"
-				NetuitiveLogger.log.level = Logger::DEBUG
-			else
-				NetuitiveLogger.log.level = Logger::ERROR
-			end
+    def readConfig()
+      gem_root= File.expand_path("../../..", __FILE__)
+      data=YAML.load_file "#{gem_root}/config/agent.yml"
+      debugLevelString=ENV["NETUITIVE_RAILS_DEBUG_LEVEL"]
+      if(debugLevelString == nil or debugLevelString == "")
+        debugLevelString=data["debugLevel"]
+      end
+      if debugLevelString == "error"
+        NetuitiveLogger.log.level = Logger::ERROR
+      elsif debugLevelString == "info"
+        NetuitiveLogger.log.level = Logger::INFO
+      elsif debugLevelString == "debug"
+        NetuitiveLogger.log.level = Logger::DEBUG
+      else
+        NetuitiveLogger.log.level = Logger::ERROR
+      end
 
-			exceptionString=ENV["NETUITIVE_RAILS_SEND_ERROR_EVENTS"] == nil ? nil : ENV["NETUITIVE_RAILS_SEND_ERROR_EVENTS"].dup
-			if(exceptionString == nil or exceptionString == "")
-				@@captureErrors = data["sendErrorEvents"]
-			else
-				exceptionString.strip!
-				@@captureErrors = exceptionString.casecmp("true") == 0
-			end
+      exceptionString=ENV["NETUITIVE_RAILS_SEND_ERROR_EVENTS"] == nil ? nil : ENV["NETUITIVE_RAILS_SEND_ERROR_EVENTS"].dup
+      if(exceptionString == nil or exceptionString == "")
+        @@captureErrors = data["sendErrorEvents"]
+      else
+        exceptionString.strip!
+        @@captureErrors = exceptionString.casecmp("true") == 0
+      end
 
-			divisorString=ENV["NETUITIVE_RAILS_QUEUE_TIME_UNITS"] == nil ? nil : ENV["NETUITIVE_RAILS_QUEUE_TIME_UNITS"]
-			if(divisorString == nil or divisorString == "")
-				@@queueTimeDivisor = data["queueTimeUnits"].to_f
-			else
-				@@queueTimeDivisor = divisorString.to_f
-			end
+      divisorString=ENV["NETUITIVE_RAILS_QUEUE_TIME_UNITS"] == nil ? nil : ENV["NETUITIVE_RAILS_QUEUE_TIME_UNITS"]
+      if(divisorString == nil or divisorString == "")
+        @@queueTimeDivisor = data["queueTimeUnits"].to_f
+      else
+        @@queueTimeDivisor = divisorString.to_f
+      end
 
-			@@ignoredErrors = Array.new
-			ignoredExceptionString=ENV["NETUITIVE_RAILS_IGNORED_ERRORS"] == nil ? nil : ENV["NETUITIVE_RAILS_IGNORED_ERRORS"].dup
-			if(ignoredExceptionString == nil or ignoredExceptionString == "")
-				if data["ignoredErrors"] != nil && data["ignoredErrors"].kind_of?(Array)
-					@@ignoredErrors = data["ignoredErrors"]
-				end
-			else
-				@@ignoredErrors = ignoredExceptionString.split(",")
-			end
-			if !@@ignoredErrors.empty?
-				@@ignoredErrors.each { |x| x.strip! }
-			end
+      @@ignoredErrors = Array.new
+      ignoredExceptionString=ENV["NETUITIVE_RAILS_IGNORED_ERRORS"] == nil ? nil : ENV["NETUITIVE_RAILS_IGNORED_ERRORS"].dup
+      if(ignoredExceptionString == nil or ignoredExceptionString == "")
+        if data["ignoredErrors"] != nil && data["ignoredErrors"].kind_of?(Array)
+          @@ignoredErrors = data["ignoredErrors"]
+        end
+      else
+        @@ignoredErrors = ignoredExceptionString.split(",")
+      end
+      if !@@ignoredErrors.empty?
+        @@ignoredErrors.each { |x| x.strip! }
+      end
 
-			NetuitiveLogger.log.debug "read config file. Results: 
-				debugLevel: #{debugLevelString}
-				captureErrors: #{@@captureErrors},
-				ignoredErrors: #{ignoredErrors},
-				queueTimeDivisor: #{queueTimeDivisor}"
-		end
-	end
-end 
+      NetuitiveLogger.log.debug "read config file. Results:
+        debugLevel: #{debugLevelString}
+        captureErrors: #{@@captureErrors},
+        ignoredErrors: #{ignoredErrors},
+        queueTimeDivisor: #{queueTimeDivisor}"
+    end
+  end
+end

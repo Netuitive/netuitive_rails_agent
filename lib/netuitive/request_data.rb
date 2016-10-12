@@ -1,30 +1,30 @@
 require 'netuitive/rails_config_manager'
 
-module RequestDataHook 
+module RequestDataHook
 
   include ControllerUtils
 
-	HEADERS_NAMES = [
+  HEADERS_NAMES = [
     'HTTP_X_REQUEST_START'.freeze,
     'HTTP_X_QUEUE_START'.freeze,
     'HTTP_X_MIDDLEWARE_START'.freeze
   ].freeze
 
   def self.headerStartTime(headers)
-      if headers
-        startTime = nil
-        HEADERS_NAMES.each do |headerName|
-          header = headers[headerName]
-          if header != nil
-            headerTime = header.to_f/ConfigManager.queueTimeDivisor
-            NetuitiveLogger.log.debug "queue headerTime: #{headerTime}"
-            startTime = (startTime == nil || headerTime < startTime) ? headerTime : startTime
-            NetuitiveLogger.log.debug "queue startTime: #{startTime}"
-          end
+    if headers
+      startTime = nil
+      HEADERS_NAMES.each do |headerName|
+        header = headers[headerName]
+        if header != nil
+          headerTime = header.to_f/ConfigManager.queueTimeDivisor
+          NetuitiveLogger.log.debug "queue headerTime: #{headerTime}"
+          startTime = (startTime == nil || headerTime < startTime) ? headerTime : startTime
+          NetuitiveLogger.log.debug "queue startTime: #{startTime}"
         end
-        return (Time.now.to_i - startTime) * 1000.0
       end
-      return nil
+      return (Time.now.to_i - startTime) * 1000.0
+    end
+    return nil
   end
 
   def netuitiveRequestHook
