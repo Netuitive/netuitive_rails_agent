@@ -9,12 +9,12 @@ require 'netuitive/active_job'
 require 'netuitive/rails_config_manager'
 require 'netuitive/scheduler'
 
-NetuitiveActionControllerSub::subscribe
-NetuitiveActiveRecordSub::subscribe
-NetuitiveActionViewSub::subscribe
-NetuitiveActionMailer::subscribe
-NetuitiveActiveSupportSub::subscribe
-NetuitiveActiveJobSub::subscribe
+NetuitiveActionControllerSub.subscribe
+NetuitiveActiveRecordSub.subscribe
+NetuitiveActionViewSub.subscribe
+NetuitiveActionMailer.subscribe
+NetuitiveActiveSupportSub.subscribe
+NetuitiveActiveJobSub.subscribe
 
-ConfigManager::setup
-Scheduler::startSchedule
+ConfigManager.setup
+Scheduler.start_schedule

@@ -1,2 +1,12 @@
 #all are configurable using environment variables
 debugLevel: error #options (in ascending order of debugness) are: error, info, debug. environment variable: NETUITIVE_RAILS_DEBUG_LEVEL
+queueTimeUnits: 1 #this is the divisor required to get the queue time into seconds. examples: seconds: 1, milliseconds: 1000, microseconds: 1000000. environment variable: NETUITIVE_RAILS_QUEUE_TIME_UNITS
+sendErrorEvents: false #toggle for sending exceptions to netuitived for export as external events. environment variable: NETUITIVE_RAILS_SEND_ERROR_EVENTS
+ignoredErrors: #list of exceptions to ignore. should be provided in the following yaml format:
+#ignoredErrors:
+# - RuntimeError
+# - ArgumentError
+#or the following env argument format: NETUITIVE_RAILS_IGNORED_ERRORS=RuntimeError,ArgumentError
+#to ignore exceptions that match against an ancestor, add "^" to the exception class. 
+#Example: NETUITIVE_RAILS_IGNORED_ERRORS=RuntimeError^
+#will ignore all errors that inherit from RuntimeError
