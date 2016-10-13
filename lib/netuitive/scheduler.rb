@@ -14,12 +14,8 @@ class Scheduler
   end
 
   def self.interval
-    interval = 60
-    begin
-      interval = NetuitiveRubyAPI.netuitivedServer.interval
-    rescue
-      NetuitiveLogger.log.info 'unable to retrieve netuitived interval defaulting to 60'
-    end
+    interval = NetuitiveRubyAPI.netuitivedServer.interval
+    interval = 60 if interval.nil?
     interval
   end
 
