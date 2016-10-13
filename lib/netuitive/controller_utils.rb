@@ -1,25 +1,15 @@
 module ControllerUtils
-  def actionName
-    if defined? @controller #rails 2
-      return @controller.action_name
-    elsif defined? controller #rails 3.1.X
-      return controller.action_name
-    else
-      return action_name #rails 4.X
-    end
+  def netuitive_action_name
+    return controller.action_name if defined? controller # rails 3.1.X
+    action_name # rails 4.X
   end
 
-  def controllerName
-    return self.class.name
+  def netuitive_controller_name
+    self.class.name
   end
 
-  def requestUri
-    if defined? request.request_uri #rails 2
-      return request.request_uri
-    elsif defined? request.fullpath #rails 3
-      return request.fullpath
-    else
-      return request.original_fullpath #rails >3.2
-    end
+  def netuitive_request_uri
+    return request.fullpath if defined? request.fullpath # rails 3
+    request.original_fullpath # rails >3.2
   end
 end

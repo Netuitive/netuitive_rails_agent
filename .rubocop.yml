@@ -1,0 +1,13 @@
+Metrics/LineLength:
+  Max: 160 # 80*2 
+
+Style/Documentation:
+  Enabled: false
+
+Style/EndOfLine:
+  Enabled: false
+
+Metrics:
+  Enabled: false
+
+
