@@ -27,15 +27,19 @@ module RequestDataHook
 
   def netuitive_request_hook
     return unless request
-    queue_time = RequestDataHook.header_start_time(request.headers)
-    NetuitiveLogger.log.debug "queue_time: #{queue_time}"
-    NetuitiveLogger.log.debug 'sending queue_time metrics'
-    NetuitiveRubyAPI.netuitivedServer.addSample('action_controller.request.queue_time', queue_time)
-    return unless netuitive_controller_name
-    NetuitiveLogger.log.debug "sending queue_time metrics with netuitive_controller_name #{netuitive_controller_name}"
-    NetuitiveRubyAPI.netuitivedServer.addSample("action_controller.#{netuitive_controller_name}.request.queue_time", queue_time)
-    return unless netuitive_action_name
-    NetuitiveLogger.log.debug "sending queue_time metrics with netuitive_action_name #{netuitive_action_name}"
-    NetuitiveRubyAPI.netuitivedServer.addSample("action_controller.#{netuitive_controller_name}.#{netuitive_action_name}.request.queue_time", queue_time)
+    begin
+      queue_time = RequestDataHook.header_start_time(request.headers)
+      NetuitiveLogger.log.debug "queue_time: #{queue_time}"
+      NetuitiveLogger.log.debug 'sending queue_time metrics'
+      NetuitiveRubyAPI.add_sample('action_controller.request.queue_time', queue_time)
+      return unless netuitive_controller_name
+      NetuitiveLogger.log.debug "sending queue_time metrics with netuitive_controller_name #{netuitive_controller_name}"
+      NetuitiveRubyAPI.add_sample("action_controller.#{netuitive_controller_name}.request.queue_time", queue_time)
+      return unless netuitive_action_name
+      NetuitiveLogger.log.debug "sending queue_time metrics with netuitive_action_name #{netuitive_action_name}"
+      NetuitiveRubyAPI.add_sample("action_controller.#{netuitive_controller_name}.#{netuitive_action_name}.request.queue_time", queue_time)
+    rescue => e
+      NetuitiveLogger.log.error "exception during request tracking: message:#{e.message} backtrace:#{e.backtrace}"
+    end
   end
 end

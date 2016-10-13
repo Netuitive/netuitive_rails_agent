@@ -26,25 +26,25 @@ module ErrorTrackerHook
       begin
         NetuitiveLogger.log.debug "caught error: #{exception}"
         unless ignored_error?(exception)
-          NetuitiveLogger.log.debug "error: #{exception} wasn't ignored"
+          NetuitiveLogger.log.debug "#{exception} wasn't ignored"
           if ConfigManager.capture_errors
             NetuitiveLogger.log.debug "sending error: #{exception}"
-            NetuitiveRubyAPI.netuitivedServer.exceptionEvent(exception, exception.class, netuitive_request_uri, netuitive_controller_name, netuitive_action_name)
+            NetuitiveRubyAPI.exception_event(exception, exception.class, netuitive_request_uri, netuitive_controller_name, netuitive_action_name)
             NetuitiveLogger.log.debug 'sent error'
           end
           NetuitiveLogger.log.debug 'sending error metrics'
-          NetuitiveRubyAPI.netuitivedServer.aggregateMetric('action_controller.errors', 1)
+          NetuitiveRubyAPI.aggregate_metric('action_controller.errors', 1)
           if netuitive_controller_name
             NetuitiveLogger.log.debug "sent error metric with netuitive_controller_name: #{netuitive_controller_name}"
-            NetuitiveRubyAPI.netuitivedServer.aggregateMetric("action_controller.#{netuitive_controller_name}.errors", 1)
+            NetuitiveRubyAPI.aggregate_metric("action_controller.#{netuitive_controller_name}.errors", 1)
             if netuitive_action_name
               NetuitiveLogger.log.debug "sent error metric with netuitive_action_name: #{netuitive_action_name}"
-              NetuitiveRubyAPI.netuitivedServer.aggregateMetric("action_controller.#{netuitive_controller_name}.#{netuitive_action_name}.errors", 1)
+              NetuitiveRubyAPI.aggregate_metric("action_controller.#{netuitive_controller_name}.#{netuitive_action_name}.errors", 1)
             end
           end
         end
-      rescue
-        NetuitiveLogger.log.error 'failure to communicate to netuitived'
+      rescue => e
+        NetuitiveLogger.log.error "exception during error tracking: message:#{e.message} backtrace:#{e.backtrace}"
       end
       raise exception
     end
