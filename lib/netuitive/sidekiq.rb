@@ -3,19 +3,19 @@ require 'netuitive/error_utils'
 class SidekiqTracker
   def self.setup
     return unless ConfigManager.sidekiq_enabled
-    
-    NetuitiveLogger.log.debug "turning on sidekiq tracking"
+
+    NetuitiveLogger.log.debug 'turning on sidekiq tracking'
     require 'sidekiq'
     Sidekiq.configure_server do |config|
-      config.error_handlers << Proc.new {|ex,ctx_hash| SidekiqTracker::ErrorTracker.new.call(ex, ctx_hash) }
+      config.error_handlers << proc { |ex, ctx_hash| SidekiqTracker::ErrorTracker.new.call(ex, ctx_hash) }
       config.server_middleware do |chain|
         chain.add SidekiqTracker::ChainTracker
       end
     end
-    NetuitiveLogger.log.debug "sidekiq tracking installed"
+    NetuitiveLogger.log.debug 'sidekiq tracking installed'
   end
 
-   class ChainTracker
+  class ChainTracker
     def call(worker, item, queue)
       begin
         klass = item['wrapped'.freeze] || worker.class.to_s
