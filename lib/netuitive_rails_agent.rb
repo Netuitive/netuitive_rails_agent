@@ -16,5 +16,7 @@ NetuitiveActionMailer.subscribe
 NetuitiveActiveSupportSub.subscribe
 NetuitiveActiveJobSub.subscribe
 
-ConfigManager.setup
+ConfigManager.load_config
+NetuitiveLogger.setup
+ConfigManager.read_config
 Scheduler.start_schedule

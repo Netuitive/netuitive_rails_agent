@@ -13,8 +13,8 @@ class GCStatsCollector
             NetuitiveRubyAPI.aggregate_metric("GC.stat.#{key}", value)
           end
         end
-        NetuitiveLogger.log.debug 'sending aggregateCounterMetric GC.profiler.total_time'
-        NetuitiveRubyAPI.aggregate_counter_metric('GC.profiler.total_time', GC.Profiler.total_time)
+        NetuitiveLogger.log.debug 'sending aggregateCounterMetric GC::profiler.total_time'
+        NetuitiveRubyAPI.aggregate_counter_metric('GC::profiler.total_time', GC::Profiler.total_time)
       rescue => e
         NetuitiveLogger.log.error "exception during gc collection: message:#{e.message} backtrace:#{e.backtrace}"
       end
