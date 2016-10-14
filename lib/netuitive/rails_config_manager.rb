@@ -8,6 +8,8 @@ class ConfigManager
 
     attr_reader :queue_time_divisor
 
+    attr_reader :sidekiq_enabled
+
     attr_reader :data
 
     def property(name, var, default = nil)
@@ -69,12 +71,14 @@ class ConfigManager
       @capture_errors = boolean_property('sendErrorEvents', 'NETUITIVE_RAILS_SEND_ERROR_EVENTS')
       @queue_time_divisor = float_property('queueTimeUnits', 'NETUITIVE_RAILS_QUEUE_TIME_UNITS')
       @ignored_errors = string_list_property('ignoredErrors', 'NETUITIVE_RAILS_IGNORED_ERRORS')
+      @sidekiq_enabled = boolean_property('sidekiqEnabled', 'NETUITIVE_RAILS_SIDEKIQ_ENABLED')
 
       NetuitiveLogger.log.debug "read config file. Results:
-        debugLevel: #{debug_level_string}
+        debugLevel: #{debug_level_string},
         capture_errors: #{capture_errors},
         ignored_errors: #{ignored_errors},
-        queue_time_divisor: #{queue_time_divisor}"
+        queue_time_divisor: #{queue_time_divisor},
+        sidekiq_enabled: #{sidekiq_enabled}"
     end
   end
 end

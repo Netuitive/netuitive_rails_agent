@@ -12,7 +12,6 @@ module ErrorTrackerHook
   included do
     rescue_from Exception do |exception|
       begin
-        NetuitiveLogger.log.debug "#{exception} wasn't ignored"
         tags = {
           URI: netuitive_request_uri,
           Controller: netuitive_controller_name,
