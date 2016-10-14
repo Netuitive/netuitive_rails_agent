@@ -8,7 +8,14 @@ require 'netuitive/active_support'
 require 'netuitive/active_job'
 require 'netuitive/rails_config_manager'
 require 'netuitive/scheduler'
+require 'netuitive/sidekiq'
 
+# load config and logger
+ConfigManager.load_config
+NetuitiveLogger.setup
+ConfigManager.read_config
+
+# subscribe to notifications
 NetuitiveActionControllerSub.subscribe
 NetuitiveActiveRecordSub.subscribe
 NetuitiveActionViewSub.subscribe
@@ -16,7 +23,8 @@ NetuitiveActionMailer.subscribe
 NetuitiveActiveSupportSub.subscribe
 NetuitiveActiveJobSub.subscribe
 
-ConfigManager.load_config
-NetuitiveLogger.setup
-ConfigManager.read_config
+# start metrics that are collected on a schedule
 Scheduler.start_schedule
+
+# sidekiq
+SidekiqTracker.setup
