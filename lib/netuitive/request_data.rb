@@ -15,7 +15,12 @@ module RequestDataHook
       HEADERS_NAMES.each do |header_name|
         header = headers[header_name]
         next if header.nil?
-        header_time = header.to_f / ConfigManager.queue_time_divisor
+        match = /\d+(\.\d{1,2})?/.match(header)
+        if match.nil?
+          NetuitiveLogger.log.error "queue time header value #{header} is not recognized"
+          next
+        end
+        header_time = match.to_s.to_f / ConfigManager.queue_time_divisor
         NetuitiveLogger.log.debug "queue header_time: #{header_time}"
         start_time = start_time.nil? || header_time < start_time ? header_time : start_time
         NetuitiveLogger.log.debug "queue start_time: #{start_time}"
