@@ -10,6 +10,26 @@ class ConfigManager
 
     attr_reader :sidekiq_enabled
 
+    attr_reader :action_controller_enabled
+
+    attr_reader :active_record_enabled
+
+    attr_reader :action_view_enabled
+
+    attr_reader :action_mailer_enabled
+
+    attr_reader :active_support_enabled
+
+    attr_reader :active_job_enabled
+
+    attr_reader :request_wrapper_enabled
+
+    attr_reader :action_errors_enabled
+
+    attr_reader :gc_enabled
+
+    attr_reader :object_space_enabled
+
     attr_reader :data
 
     def property(name, var, default = nil)
@@ -72,13 +92,33 @@ class ConfigManager
       @queue_time_divisor = float_property('queueTimeUnits', 'NETUITIVE_RAILS_QUEUE_TIME_UNITS')
       @ignored_errors = string_list_property('ignoredErrors', 'NETUITIVE_RAILS_IGNORED_ERRORS')
       @sidekiq_enabled = boolean_property('sidekiqEnabled', 'NETUITIVE_RAILS_SIDEKIQ_ENABLED')
+      @action_controller_enabled = boolean_property('actionControllerEnabled', 'NETUITIVE_RAILS_ACTION_CONTROLLER_ENABLED')
+      @active_record_enabled = boolean_property('activeRecordEnabled', 'NETUITIVE_RAILS_ACTIVE_RECORD_ENABLED')
+      @action_view_enabled = boolean_property('actionViewEnabled', 'NETUITIVE_RAILS_ACTION_VIEW_ENABLED')
+      @action_mailer_enabled = boolean_property('actionMailerEnabled', 'NETUITIVE_RAILS_ACTION_MAILER_ENABLED')
+      @active_support_enabled = boolean_property('activeSupportEnabled', 'NETUITIVE_RAILS_ACTIVE_SUPPORT_ENABLED')
+      @active_job_enabled = boolean_property('activeJobEnabled', 'NETUITIVE_RAILS_ACTIVE_JOB_ENABLED')
+      @request_wrapper_enabled = boolean_property('requestWrapperEnabled', 'NETUITIVE_RAILS_REQUEST_WRAPPER_ENABLED')
+      @action_errors_enabled = boolean_property('actionErrorsEnabled', 'NETUITIVE_RAILS_ACTION_ERRORS_ENABLED')
+      @gc_enabled = boolean_property('gcEnabled', 'NETUITIVE_RAILS_GC_ENABLED')
+      @object_space_enabled = boolean_property('objectSpaceEnabled', 'NETUITIVE_RAILS_OBJECT_SPACE_ENABLED')
 
       NetuitiveLogger.log.debug "read config file. Results:
         debugLevel: #{debug_level_string},
         capture_errors: #{capture_errors},
         ignored_errors: #{ignored_errors},
         queue_time_divisor: #{queue_time_divisor},
-        sidekiq_enabled: #{sidekiq_enabled}"
+        sidekiq_enabled: #{sidekiq_enabled},
+        action_controller_enabled: #{action_controller_enabled},
+        active_record_enabled: #{active_record_enabled},
+        action_view_enabled: #{action_view_enabled},
+        action_mailer_enabled: #{action_mailer_enabled},
+        active_support_enabled: #{active_support_enabled},
+        active_job_enabled: #{active_job_enabled},
+        request_wrapper_enabled: #{request_wrapper_enabled},
+        action_errors_enabled: #{action_errors_enabled},
+        gc_enabled: #{gc_enabled},
+        object_space_enabled: #{object_space_enabled}"
     end
   end
 end

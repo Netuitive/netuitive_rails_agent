@@ -5,9 +5,11 @@ require 'action_controller'
 
 module ActionController
   class Base
-    include ErrorTrackerHook
-    include RequestDataHook
-    before_action :netuitive_request_hook
+    self.class.send(:include, ErrorTrackerHook) if ConfigManager.action_errors_enabled
+    if ConfigManager.request_wrapper_enabled
+      self.class.send(:include, RequestDataHook)
+      before_action :netuitive_request_hook
+    end
   end
 end
 

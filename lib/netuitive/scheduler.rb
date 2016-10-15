@@ -22,8 +22,8 @@ class Scheduler
   def self.collect_metrics
     NetuitiveLogger.log.debug 'collecting schedule metrics'
     begin
-      GCStatsCollector.collect
-      ObjectSpaceStatsCollector.collect
+      GCStatsCollector.collect if ConfigManager.gc_enabled
+      ObjectSpaceStatsCollector.collect if ConfigManager.object_space_enabled
     rescue => e
       NetuitiveLogger.log.error "unable to collect schedule metrics: message:#{e.message} backtrace:#{e.backtrace}"
     end
