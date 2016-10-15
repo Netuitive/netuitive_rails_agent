@@ -16,15 +16,15 @@ NetuitiveLogger.setup
 ConfigManager.read_config
 
 # subscribe to notifications
-NetuitiveActionControllerSub.subscribe
-NetuitiveActiveRecordSub.subscribe
-NetuitiveActionViewSub.subscribe
-NetuitiveActionMailer.subscribe
-NetuitiveActiveSupportSub.subscribe
-NetuitiveActiveJobSub.subscribe
+NetuitiveActionControllerSub.subscribe if ConfigManager.action_controller_enabled
+NetuitiveActiveRecordSub.subscribe if ConfigManager.active_record_enabled
+NetuitiveActionViewSub.subscribe if ConfigManager.action_view_enabled
+NetuitiveActionMailer.subscribe if ConfigManager.action_mailer_enabled
+NetuitiveActiveSupportSub.subscribe if ConfigManager.active_support_enabled
+NetuitiveActiveJobSub.subscribe if ConfigManager.active_job_enabled
 
 # start metrics that are collected on a schedule
-Scheduler.start_schedule
+Scheduler.start_schedule if ConfigManager.gc_enabled || ConfigManager.object_space_enabled
 
 # sidekiq
-SidekiqTracker.setup
+SidekiqTracker.setup if ConfigManager.sidekiq_enabled

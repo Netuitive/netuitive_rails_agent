@@ -2,8 +2,6 @@ require 'netuitive/error_utils'
 
 class SidekiqTracker
   def self.setup
-    return unless ConfigManager.sidekiq_enabled
-
     NetuitiveLogger.log.debug 'turning on sidekiq tracking'
     require 'sidekiq'
     Sidekiq.configure_server do |config|
