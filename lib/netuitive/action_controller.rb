@@ -15,7 +15,7 @@ class NetuitiveActionControllerSub
     @interaction = interaction
   end
 
-  def self.subscribe
+  def subscribe
     ActiveSupport::Notifications.subscribe(/process_action.action_controller/) do |*args|
       process_action(args)
     end

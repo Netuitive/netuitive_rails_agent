@@ -35,7 +35,7 @@ NetuitiveActiveSupportSub.new(interaction).subscribe if ConfigManager.active_sup
 NetuitiveActiveJobSub.new(interaction).subscribe if ConfigManager.active_job_enabled
 
 # start metrics that are collected on a schedule
-Scheduler.start_schedule if ConfigManager.gc_enabled || ConfigManager.object_space_enabled
+Scheduler.new(interaction).start_schedule if ConfigManager.gc_enabled || ConfigManager.object_space_enabled
 
 # sidekiq
 SidekiqTracker.new.setup if ConfigManager.sidekiq_enabled
