@@ -1,8 +1,6 @@
-require 'netuitive/request_data'
-
 class RequestDataTest < Test::Unit::TestCase
   def setup
-    ConfigManager.queue_time_divisor = 1.0
+    RailsConfigManager.queue_time_divisor = 1.0
   end
 
   def test_header_start_time

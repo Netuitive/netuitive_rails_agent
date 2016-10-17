@@ -6,30 +6,30 @@ class ErrorUtilsTest < Test::Unit::TestCase
 
   def test_ignored_error
     # ignored error
-    ConfigManager.ignored_errors = ['StandardError']
+    RailsConfigManager.ignored_errors = ['StandardError']
     assert(ignored_error?(StandardError.new))
 
     # not ignored
-    ConfigManager.ignored_errors = ['RuntimeError']
+    RailsConfigManager.ignored_errors = ['RuntimeError']
     assert(!ignored_error?(ArgumentError.new))
 
     # ignored ancestry
-    ConfigManager.ignored_errors = ['StandardError^']
+    RailsConfigManager.ignored_errors = ['StandardError^']
     assert(ignored_error?(ArgumentError.new))
 
     # not ignored ancestry
-    ConfigManager.ignored_errors = ['RuntimeError^']
+    RailsConfigManager.ignored_errors = ['RuntimeError^']
     assert(!ignored_error?(ArgumentError.new))
 
     # subclass doesn't ignore ancestor
-    ConfigManager.ignored_errors = ['ArgumentError^']
+    RailsConfigManager.ignored_errors = ['ArgumentError^']
     assert(!ignored_error?(StandardError.new))
   end
 
   def test_handle_error
     # not ignored
-    ConfigManager.ignored_errors = []
-    ConfigManager.capture_errors = true
+    RailsConfigManager.ignored_errors = []
+    RailsConfigManager.capture_errors = true
     metrics = ['test.id.1', 'test.id.2']
     tags = { name: 'value' }
     error = RuntimeError.new
@@ -39,8 +39,8 @@ class ErrorUtilsTest < Test::Unit::TestCase
     handle_error(error, metrics, tags)
 
     # ignored event
-    ConfigManager.ignored_errors = []
-    ConfigManager.capture_errors = false
+    RailsConfigManager.ignored_errors = []
+    RailsConfigManager.capture_errors = false
     metrics = ['test.id.1', 'test.id.2']
     tags = { name: 'value' }
     error = RuntimeError.new
@@ -49,8 +49,8 @@ class ErrorUtilsTest < Test::Unit::TestCase
     handle_error(error, metrics, tags)
 
     # ignored error
-    ConfigManager.ignored_errors = ['RuntimeError']
-    ConfigManager.capture_errors = false
+    RailsConfigManager.ignored_errors = ['RuntimeError']
+    RailsConfigManager.capture_errors = false
     metrics = ['test.id.1', 'test.id.2']
     tags = { name: 'value' }
     error = RuntimeError.new

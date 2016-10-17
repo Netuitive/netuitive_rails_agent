@@ -1,6 +1,4 @@
-require 'netuitive/netuitive_rails_logger'
-
-class ConfigManager
+class RailsConfigManager
   class << self
     attr_accessor :capture_errors
 
@@ -78,15 +76,15 @@ class ConfigManager
 
     def read_config
       debug_level_string = property('debugLevel', 'NETUITIVE_RAILS_DEBUG_LEVEL')
-      NetuitiveLogger.log.level = if debug_level_string == 'error'
-                                    Logger::ERROR
-                                  elsif debug_level_string == 'info'
-                                    Logger::INFO
-                                  elsif debug_level_string == 'debug'
-                                    Logger::DEBUG
-                                  else
-                                    Logger::ERROR
-                                  end
+      RailsNetuitiveLogger.log.level = if debug_level_string == 'error'
+                                         Logger::ERROR
+                                       elsif debug_level_string == 'info'
+                                         Logger::INFO
+                                       elsif debug_level_string == 'debug'
+                                         Logger::DEBUG
+                                       else
+                                         Logger::ERROR
+                                       end
 
       @capture_errors = boolean_property('sendErrorEvents', 'NETUITIVE_RAILS_SEND_ERROR_EVENTS')
       @queue_time_divisor = float_property('queueTimeUnits', 'NETUITIVE_RAILS_QUEUE_TIME_UNITS')
@@ -103,7 +101,7 @@ class ConfigManager
       @gc_enabled = boolean_property('gcEnabled', 'NETUITIVE_RAILS_GC_ENABLED')
       @object_space_enabled = boolean_property('objectSpaceEnabled', 'NETUITIVE_RAILS_OBJECT_SPACE_ENABLED')
 
-      NetuitiveLogger.log.debug "read config file. Results:
+      RailsNetuitiveLogger.log.debug "read config file. Results:
         debugLevel: #{debug_level_string},
         capture_errors: #{capture_errors},
         ignored_errors: #{ignored_errors},

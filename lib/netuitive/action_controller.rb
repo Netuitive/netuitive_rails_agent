@@ -1,10 +1,8 @@
-module ActionController
-  class Base
-    self.class.send(:include, ErrorTrackerHook) if ConfigManager.action_errors_enabled
-    if ConfigManager.request_wrapper_enabled
-      self.class.send(:include, RequestDataHook)
-      before_action :netuitive_request_hook
-    end
+ActionController::Base.class_eval do
+  include ErrorTrackerHook if RailsConfigManager.action_errors_enabled
+  if RailsConfigManager.request_wrapper_enabled
+    include RequestDataHook
+    before_action :netuitive_request_hook
   end
 end
 
@@ -17,7 +15,7 @@ class NetuitiveActionControllerSub
 
   def subscribe
     ActiveSupport::Notifications.subscribe(/process_action.action_controller/) do |*args|
-      process_action(args)
+      process_action(*args)
     end
     ActiveSupport::Notifications.subscribe(/write_fragment.action_controller/) do |*_args|
       write_fragment

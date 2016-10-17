@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'mocha/test_unit'
 require 'active_support'
+require 'action_controller'
 require 'netuitive_ruby_api'
 require 'netuitive/api_interaction'
 require 'netuitive/controller_utils'
@@ -23,7 +24,7 @@ class ActionControllerTest < Test::Unit::TestCase
   def setup
     @interaction = mock
     @sub = NetuitiveActionControllerSub.new(@interaction)
-    NetuitiveLogger.setup
+    RailsNetuitiveLogger.setup
   end
 
   def test_process_action

@@ -9,7 +9,7 @@ class Scheduler
   end
 
   def start_schedule
-    NetuitiveLogger.log.debug 'starting schedule'
+    RailsNetuitiveLogger.log.debug 'starting schedule'
     Thread.new do
       loop do
         collect_metrics
@@ -25,12 +25,12 @@ class Scheduler
   end
 
   def collect_metrics
-    NetuitiveLogger.log.debug 'collecting schedule metrics'
+    RailsNetuitiveLogger.log.debug 'collecting schedule metrics'
     begin
-      gc_stats_collector.collect if ConfigManager.gc_enabled
-      object_space_collector.collect if ConfigManager.object_space_enabled
+      gc_stats_collector.collect if RailsConfigManager.gc_enabled
+      object_space_collector.collect if RailsConfigManager.object_space_enabled
     rescue => e
-      NetuitiveLogger.log.error "unable to collect schedule metrics: message:#{e.message} backtrace:#{e.backtrace}"
+      RailsNetuitiveLogger.log.error "unable to collect schedule metrics: message:#{e.message} backtrace:#{e.backtrace}"
     end
   end
 end

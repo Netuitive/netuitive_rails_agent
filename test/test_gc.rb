@@ -1,5 +1,3 @@
-require 'netuitive/gc'
-
 class GCTest < Test::Unit::TestCase
   def setup
     GC::Profiler.enable

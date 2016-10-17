@@ -24,8 +24,8 @@ class SidekiqTest < Test::Unit::TestCase
   end
 
   def test_error
-    ConfigManager.ignored_errors = []
-    ConfigManager.capture_errors = true
+    RailsConfigManager.ignored_errors = []
+    RailsConfigManager.capture_errors = true
     context = { context: 'Exception during Sidekiq lifecycle event.' }
     tags = {
       sidekiq: 'true',
