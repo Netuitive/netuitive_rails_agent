@@ -1,10 +1,15 @@
-require 'netuitive/netuitive_rails_logger'
-require 'netuitive/gc'
-require 'netuitive/objectspace'
-
 class Scheduler
-  def self.start_schedule
-    NetuitiveLogger.log.debug 'starting schedule'
+  attr_reader :gc_stats_collector
+  attr_reader :object_space_collector
+  attr_reader :interaction
+  def initialize(interaction)
+    @gc_stats_collector = GCStatsCollector.new(interaction)
+    @object_space_collector = ObjectSpaceStatsCollector.new(interaction)
+    @interaction = interaction
+  end
+
+  def start_schedule
+    RailsNetuitiveLogger.log.debug 'starting schedule'
     Thread.new do
       loop do
         collect_metrics
@@ -13,19 +18,19 @@ class Scheduler
     end
   end
 
-  def self.interval
-    interval = NetuitiveRubyAPI.netuitivedServer.interval
+  def interval
+    interval = interaction.netuitivedServer.interval
     interval = 60 if interval.nil?
     interval
   end
 
-  def self.collect_metrics
-    NetuitiveLogger.log.debug 'collecting schedule metrics'
+  def collect_metrics
+    RailsNetuitiveLogger.log.debug 'collecting schedule metrics'
     begin
-      GCStatsCollector.collect if ConfigManager.gc_enabled
-      ObjectSpaceStatsCollector.collect if ConfigManager.object_space_enabled
+      gc_stats_collector.collect if RailsConfigManager.gc_enabled
+      object_space_collector.collect if RailsConfigManager.object_space_enabled
     rescue => e
-      NetuitiveLogger.log.error "unable to collect schedule metrics: message:#{e.message} backtrace:#{e.backtrace}"
+      RailsNetuitiveLogger.log.error "unable to collect schedule metrics: message:#{e.message} backtrace:#{e.backtrace}"
     end
   end
 end

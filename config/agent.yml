@@ -3,7 +3,7 @@
 #log config options
 logLocation: #NETUITIVE_RAILS_LOG_LOCATION absolute path of log file. leave blank for default location in the gem directory.
 logAge: daily #NETUITIVE_RAILS_LOG_AGE Number of old log files to keep, or frequency of rotation (daily, weekly or monthly).
-logSize: #NETUITIVE_RAILS_LOG_SIZE Maximum logfile size (only applies when shift_age is a number).
+logSize: #NETUITIVE_RAILS_LOG_SIZE Maximum logfile size in bytes(only applies when shift_age is a number).
 debugLevel: error #NETUITIVE_RAILS_DEBUG_LEVEL options (in ascending order of debugness) are: error, info, debug.
 
 #feature flags

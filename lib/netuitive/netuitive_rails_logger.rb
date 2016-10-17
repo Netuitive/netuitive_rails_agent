@@ -12,17 +12,18 @@ class CheaterLogger
   end
 end
 
-class NetuitiveLogger
+class RailsNetuitiveLogger
   class << self
-    attr_reader :log
+    attr_accessor :log
     def setup
-      file = ConfigManager.property('logLocation', 'NETUITIVE_RAILS_LOG_LOCATION', "#{File.expand_path('../../..', __FILE__)}/log/netuitive.log")
-      age = ConfigManager.property('logAge', 'NETUITIVE_RAILS_LOG_AGE', 'daily')
-      size = ConfigManager.property('logSize', 'NETUITIVE_RAILS_LOG_SIZE', nil)
-      @log = Logger.new(file, age, size)
-    rescue
+      file = RailsConfigManager.property('logLocation', 'NETUITIVE_RAILS_LOG_LOCATION', "#{File.expand_path('../../..', __FILE__)}/log/netuitive.log")
+      age = RailsConfigManager.property('logAge', 'NETUITIVE_RAILS_LOG_AGE', 'daily')
+      size = RailsConfigManager.property('logSize', 'NETUITIVE_RAILS_LOG_SIZE', nil)
+      RailsNetuitiveLogger.log = Logger.new(file, age.to_i, size.to_i)
+    rescue => e
       puts 'netuitive unable to open log file'
-      @log = CheaterLogger.new
+      puts e.message
+      RailsNetuitiveLogger.log = CheaterLogger.new
     end
   end
 end

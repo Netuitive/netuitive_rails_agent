@@ -1,8 +1,6 @@
-require 'netuitive/error_utils'
-
 class SidekiqTracker
-  def self.setup
-    NetuitiveLogger.log.debug 'turning on sidekiq tracking'
+  def setup
+    RailsNetuitiveLogger.log.debug 'turning on sidekiq tracking'
     require 'sidekiq'
     Sidekiq.configure_server do |config|
       config.error_handlers << proc { |ex, ctx_hash| SidekiqTracker::ErrorTracker.new.call(ex, ctx_hash) }
@@ -10,20 +8,25 @@ class SidekiqTracker
         chain.add SidekiqTracker::ChainTracker
       end
     end
-    NetuitiveLogger.log.debug 'sidekiq tracking installed'
+    RailsNetuitiveLogger.log.debug 'sidekiq tracking installed'
   end
 
   class ChainTracker
+    attr_accessor :interaction
+    def initialize
+      @interaction = ApiInteraction.new
+    end
+
     def call(worker, item, queue)
       begin
         klass = item['wrapped'.freeze] || worker.class.to_s
         queue = item['queue']
-        NetuitiveLogger.log.debug "sidekiq job tracked. queue: #{queue}, class: #{klass}"
-        NetuitiveRubyAPI.aggregate_metric("sidekiq.#{klass}.job.count", 1)
-        NetuitiveRubyAPI.aggregate_metric("sidekiq.#{queue}.job.count", 1)
-        NetuitiveRubyAPI.aggregate_metric("sidekiq.#{queue}.#{klass}.job.count", 1)
+        RailsNetuitiveLogger.log.debug "sidekiq job tracked. queue: #{queue}, class: #{klass}"
+        interaction.aggregate_metric("sidekiq.#{klass}.job.count", 1)
+        interaction.aggregate_metric("sidekiq.#{queue}.job.count", 1)
+        interaction.aggregate_metric("sidekiq.#{queue}.#{klass}.job.count", 1)
       rescue => e
-        NetuitiveLogger.log.error "exception during sidekiq chain tracking: message:#{e.message} backtrace:#{e.backtrace}"
+        RailsNetuitiveLogger.log.error "exception during sidekiq chain tracking: message:#{e.message} backtrace:#{e.backtrace}"
       end
       yield
     end
@@ -32,8 +35,12 @@ class SidekiqTracker
   class ErrorTracker
     include ErrorUtils
 
+    def initialize
+      @interaction = ApiInteraction.new
+    end
+
     def call(exception, ctx_hash)
-      NetuitiveLogger.log.debug "sidekiq error tracked. context: #{ctx_hash[:context]}"
+      RailsNetuitiveLogger.log.debug "sidekiq error tracked. context: #{ctx_hash[:context]}"
       tags = {
         sidekiq: 'true',
         context: ctx_hash[:context]
@@ -52,7 +59,7 @@ class SidekiqTracker
 
       handle_error(exception, metrics, tags)
     rescue => e
-      NetuitiveLogger.log.error "exception during sidekiq error tracking: message:#{e.message} backtrace:#{e.backtrace}"
+      RailsNetuitiveLogger.log.error "exception during sidekiq error tracking: message:#{e.message} backtrace:#{e.backtrace}"
     end
   end
 end

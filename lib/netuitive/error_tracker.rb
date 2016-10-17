@@ -1,7 +1,3 @@
-require 'netuitive/controller_utils'
-require 'netuitive/error_utils'
-require 'netuitive/rails_config_manager'
-
 module ErrorTrackerHook
   extend ActiveSupport::Concern
 
@@ -10,6 +6,7 @@ module ErrorTrackerHook
   include ErrorUtils
 
   included do
+    RailsNetuitiveLogger.log.debug 'ErrorTracker included'
     rescue_from Exception do |exception|
       begin
         tags = {
@@ -26,7 +23,7 @@ module ErrorTrackerHook
         end
         handle_error(exception, metrics, tags)
       rescue => e
-        NetuitiveLogger.log.error "exception during controller error tracking: message:#{e.message} backtrace:#{e.backtrace}"
+        RailsNetuitiveLogger.log.error "exception during controller error tracking: message:#{e.message} backtrace:#{e.backtrace}"
       end
       raise exception
     end
