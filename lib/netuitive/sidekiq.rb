@@ -59,7 +59,6 @@ class SidekiqTracker
 
       handle_error(exception, metrics, tags)
     rescue => e
-      puts e.message
       RailsNetuitiveLogger.log.error "exception during sidekiq error tracking: message:#{e.message} backtrace:#{e.backtrace}"
     end
   end
