@@ -4,6 +4,7 @@ rvm:
 install:
   - gem install rubocop haml-lint
   - gem install mocha
+  - gem install activesupport
 script:
   - rubocop
   - rake test
