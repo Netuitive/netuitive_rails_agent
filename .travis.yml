@@ -4,7 +4,7 @@ rvm:
 install:
   - gem install rubocop haml-lint
   - gem install mocha
-  - gem install activesupport
+  - gem install actionpack
   - gem install netuitive_ruby_api -v '>= 1.0.0'
 script:
   - rubocop
