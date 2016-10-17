@@ -1,5 +1,3 @@
-require 'netuitive/rails_config_manager'
-
 module RequestDataHook
   include ControllerUtils
 

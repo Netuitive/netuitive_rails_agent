@@ -1,7 +1,5 @@
-require 'netuitive/error_utils'
-
 class SidekiqTracker
-  def self.setup
+  def setup
     NetuitiveLogger.log.debug 'turning on sidekiq tracking'
     require 'sidekiq'
     Sidekiq.configure_server do |config|
@@ -14,14 +12,19 @@ class SidekiqTracker
   end
 
   class ChainTracker
+    attr_accessor :interaction
+    def initialize
+      @interaction = ApiInteraction.new
+    end
+
     def call(worker, item, queue)
       begin
         klass = item['wrapped'.freeze] || worker.class.to_s
         queue = item['queue']
         NetuitiveLogger.log.debug "sidekiq job tracked. queue: #{queue}, class: #{klass}"
-        NetuitiveRubyAPI.aggregate_metric("sidekiq.#{klass}.job.count", 1)
-        NetuitiveRubyAPI.aggregate_metric("sidekiq.#{queue}.job.count", 1)
-        NetuitiveRubyAPI.aggregate_metric("sidekiq.#{queue}.#{klass}.job.count", 1)
+        interaction.aggregate_metric("sidekiq.#{klass}.job.count", 1)
+        interaction.aggregate_metric("sidekiq.#{queue}.job.count", 1)
+        interaction.aggregate_metric("sidekiq.#{queue}.#{klass}.job.count", 1)
       rescue => e
         NetuitiveLogger.log.error "exception during sidekiq chain tracking: message:#{e.message} backtrace:#{e.backtrace}"
       end
@@ -52,6 +55,7 @@ class SidekiqTracker
 
       handle_error(exception, metrics, tags)
     rescue => e
+      puts e.message
       NetuitiveLogger.log.error "exception during sidekiq error tracking: message:#{e.message} backtrace:#{e.backtrace}"
     end
   end

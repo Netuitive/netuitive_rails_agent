@@ -2,35 +2,35 @@ require 'netuitive/netuitive_rails_logger'
 
 class ConfigManager
   class << self
-    attr_reader :capture_errors
+    attr_accessor :capture_errors
 
-    attr_reader :ignored_errors
+    attr_accessor :ignored_errors
 
-    attr_reader :queue_time_divisor
+    attr_accessor :queue_time_divisor
 
-    attr_reader :sidekiq_enabled
+    attr_accessor :sidekiq_enabled
 
-    attr_reader :action_controller_enabled
+    attr_accessor :action_controller_enabled
 
-    attr_reader :active_record_enabled
+    attr_accessor :active_record_enabled
 
-    attr_reader :action_view_enabled
+    attr_accessor :action_view_enabled
 
-    attr_reader :action_mailer_enabled
+    attr_accessor :action_mailer_enabled
 
-    attr_reader :active_support_enabled
+    attr_accessor :active_support_enabled
 
-    attr_reader :active_job_enabled
+    attr_accessor :active_job_enabled
 
-    attr_reader :request_wrapper_enabled
+    attr_accessor :request_wrapper_enabled
 
-    attr_reader :action_errors_enabled
+    attr_accessor :action_errors_enabled
 
-    attr_reader :gc_enabled
+    attr_accessor :gc_enabled
 
-    attr_reader :object_space_enabled
+    attr_accessor :object_space_enabled
 
-    attr_reader :data
+    attr_accessor :data
 
     def property(name, var, default = nil)
       prop = ENV[var]

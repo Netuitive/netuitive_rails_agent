@@ -1,7 +1,3 @@
-require 'netuitive/controller_utils'
-require 'netuitive/error_utils'
-require 'netuitive/rails_config_manager'
-
 module ErrorTrackerHook
   extend ActiveSupport::Concern
 

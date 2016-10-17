@@ -1,4 +1,8 @@
 module ErrorUtils
+  attr_accessor :interaction
+
+  @interaction = ApiInteraction.new
+
   def ignored_error?(exception)
     unless ConfigManager.ignored_errors.empty?
       ConfigManager.ignored_errors.each do |name|
@@ -21,12 +25,12 @@ module ErrorUtils
       NetuitiveLogger.log.debug "#{exception} wasn't ignored"
       if ConfigManager.capture_errors
         NetuitiveLogger.log.debug "sending error: #{exception}"
-        NetuitiveRubyAPI.exception_event(exception, exception.class, tags)
+        interaction.exception_event(exception, exception.class, tags)
         NetuitiveLogger.log.debug 'sent error'
       end
       NetuitiveLogger.log.debug 'sending error metrics'
       metrics.each do |metric|
-        NetuitiveRubyAPI.aggregate_metric(metric.to_s, 1)
+        interaction.aggregate_metric(metric.to_s, 1)
         NetuitiveLogger.log.debug "sent error metric with name: #{metric}"
       end
     end
