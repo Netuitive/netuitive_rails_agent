@@ -1,23 +1,36 @@
-require 'netuitive/netuitive_rails_logger'
-require 'netuitive/gc'
-require 'netuitive/objectspace'
 class Scheduler
-	def self.startSchedule
-		Thread.new do
-     while true do
-      interval = 60
-      begin
-        interval = NetuitiveRubyAPI::netuitivedServer.interval
-      rescue
-        NetuitiveLogger.log.info "unable to retrieve netuitived interval defaulting to 60"
+  attr_reader :gc_stats_collector
+  attr_reader :object_space_collector
+  attr_reader :interaction
+  def initialize(interaction)
+    @gc_stats_collector = GCStatsCollector.new(interaction)
+    @object_space_collector = ObjectSpaceStatsCollector.new(interaction)
+    @interaction = interaction
+  end
+
+  def start_schedule
+    RailsNetuitiveLogger.log.debug 'starting schedule'
+    Thread.new do
+      loop do
+        collect_metrics
+        sleep(interval)
       end
-      collectMetrics
-      sleep(interval)
+    end
+  end
+
+  def interval
+    interval = interaction.netuitivedServer.interval
+    interval = 60 if interval.nil?
+    interval
+  end
+
+  def collect_metrics
+    RailsNetuitiveLogger.log.debug 'collecting schedule metrics'
+    begin
+      gc_stats_collector.collect if RailsConfigManager.gc_enabled
+      object_space_collector.collect if RailsConfigManager.object_space_enabled
+    rescue => e
+      RailsNetuitiveLogger.log.error "unable to collect schedule metrics: message:#{e.message} backtrace:#{e.backtrace}"
     end
   end
 end
-def self.collectMetrics
-  GCStatsCollector::collect
-  ObjectSpaceStatsCollector::collect
-end
-end 

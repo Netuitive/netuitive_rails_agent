@@ -1,2 +1,37 @@
 #all are configurable using environment variables
-debugLevel: error #options (in ascending order of debugness) are: error, info, debug. environment variable: NETUITIVE_RAILS_DEBUG_LEVEL
+
+#log config options
+logLocation: #NETUITIVE_RAILS_LOG_LOCATION absolute path of log file. leave blank for default location in the gem directory.
+logAge: daily #NETUITIVE_RAILS_LOG_AGE Number of old log files to keep, or frequency of rotation (daily, weekly or monthly).
+logSize: #NETUITIVE_RAILS_LOG_SIZE Maximum logfile size in bytes(only applies when shift_age is a number).
+debugLevel: error #NETUITIVE_RAILS_DEBUG_LEVEL options (in ascending order of debugness) are: error, info, debug.
+
+#feature flags
+#active support nptifications
+actionControllerEnabled: true #NETUITIVE_RAILS_ACTION_CONTROLLER_ENABLED
+activeRecordEnabled: true #NETUITIVE_RAILS_ACTIVE_RECORD_ENABLED
+actionViewEnabled: true #NETUITIVE_RAILS_ACTION_VIEW_ENABLED
+actionMailerEnabled: true #NETUITIVE_RAILS_ACTION_MAILER_ENABLED
+activeSupportEnabled: true #NETUITIVE_RAILS_ACTIVE_SUPPORT_ENABLED
+activeJobEnabled: true #NETUITIVE_RAILS_ACTIVE_JOB_ENABLED
+#injected instrumentation
+requestWrapperEnabled: true #NETUITIVE_RAILS_REQUEST_WRAPPER_ENABLED
+actionErrorsEnabled: true #NETUITIVE_RAILS_ACTION_ERRORS_ENABLED
+#interpreter metrics
+gcEnabled: true #NETUITIVE_RAILS_GC_ENABLED
+objectSpaceEnabled: true #NETUITIVE_RAILS_OBJECT_SPACE_ENABLED
+#3rd party
+sidekiqEnabled: false #NETUITIVE_RAILS_SIDEKIQ_ENABLED toggle for collection of sidekiq metrics and errors. error events will not be sent if sendErrorEvents is set to false.
+#error tracking features
+sendErrorEvents: false #NETUITIVE_RAILS_SEND_ERROR_EVENTS toggle for sending exceptions to netuitived for export as external events.
+
+#feature configs
+queueTimeUnits: 1 #NETUITIVE_RAILS_QUEUE_TIME_UNITS this is the divisor required to get the queue time metric into seconds. examples: seconds: 1, milliseconds: 1000, microseconds: 1000000.
+ignoredErrors: #NETUITIVE_RAILS_IGNORED_ERRORS list of exceptions to ignore. should be provided in the following yaml format:
+#ignoredErrors:
+# - RuntimeError
+# - ArgumentError
+#or the following env argument format: NETUITIVE_RAILS_IGNORED_ERRORS=RuntimeError,ArgumentError
+#to ignore exceptions that match against an ancestor, add "^" to the exception class.
+#Example: NETUITIVE_RAILS_IGNORED_ERRORS=RuntimeError^
+#will ignore all errors that inherit from RuntimeError

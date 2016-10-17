@@ -1,19 +1,24 @@
-module NetuitiveActiveRecordSub
-	def self.subscribe
-		ActiveSupport::Notifications.subscribe /instantiation.active_record/ do |*args| 
-			begin
-				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_record.instantiation", 1)
-			rescue
-				NetuitiveLogger.log.error "failure to communicate to netuitived"
-			end
-		end
-		
-		ActiveSupport::Notifications.subscribe /sql.active_record/ do |*args| 
-			begin
-				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_record.sql.statement", 1)
-			rescue
-				NetuitiveLogger.log.error "failure to communicate to netuitived"
-			end
-		end
-	end
+class NetuitiveActiveRecordSub
+  attr_reader :interaction
+  def initialize(interaction)
+    @interaction = interaction
+  end
+
+  def subscribe
+    ActiveSupport::Notifications.subscribe(/instantiation.active_record/) do |*_args|
+      instantiation
+    end
+
+    ActiveSupport::Notifications.subscribe(/sql.active_record/) do |*_args|
+      sql
+    end
+  end
+
+  def instantiation
+    interaction.aggregate_metric('active_record.instantiation', 1)
+  end
+
+  def sql
+    interaction.aggregate_metric('active_record.sql.statement', 1)
+  end
 end

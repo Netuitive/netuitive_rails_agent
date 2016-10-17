@@ -1,18 +1,23 @@
-module NetuitiveActiveJobSub
-	def self.subscribe
-		ActiveSupport::Notifications.subscribe /enqueue.active_job/ do |*args| 
-			begin
-				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_job.enqueue", 1)
-			rescue
-				NetuitiveLogger.log.error "failure to communicate to netuitived"
-			end
-		end
-		ActiveSupport::Notifications.subscribe /perform.active_job/ do |*args| 
-			begin
-				NetuitiveRubyAPI::netuitivedServer.aggregateMetric("active_job.perform", 1)
-			rescue
-				NetuitiveLogger.log.error "failure to communicate to netuitived"
-			end
-		end
-	end
-end  
+class NetuitiveActiveJobSub
+  attr_reader :interaction
+  def initialize(interaction)
+    @interaction = interaction
+  end
+
+  def subscribe
+    ActiveSupport::Notifications.subscribe(/enqueue.active_job/) do |*_args|
+      enqueue
+    end
+    ActiveSupport::Notifications.subscribe(/perform.active_job/) do |*_args|
+      perform
+    end
+  end
+
+  def enqueue
+    interaction.aggregate_metric('active_job.enqueue', 1)
+  end
+
+  def perform
+    interaction.aggregate_metric('active_job.perform', 1)
+  end
+end
