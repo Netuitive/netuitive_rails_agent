@@ -1,45 +1,46 @@
-require 'netuitive/rails_config_manager'
-require 'netuitive/netuitive_rails_logger'
-
-# load config and logger
-RailsConfigManager.load_config
-RailsNetuitiveLogger.setup
-RailsConfigManager.read_config
-
+require 'logger'
 require 'active_support'
 require 'action_controller'
 require 'action_mailer'
 require 'active_support/concern'
 require 'netuitive_ruby_api'
-require 'netuitive/api_interaction'
-require 'netuitive/controller_utils'
-require 'netuitive/error_utils'
-require 'netuitive/error_tracker'
-require 'netuitive/request_data'
-require 'netuitive/action_controller'
-require 'netuitive/active_record'
-require 'netuitive/action_view'
-require 'netuitive/action_mailer'
-require 'netuitive/active_support'
-require 'netuitive/active_job'
-require 'netuitive/sidekiq'
-require 'netuitive/gc'
-require 'netuitive/objectspace'
-require 'netuitive/scheduler'
+require 'netuitive_rails_agent/config_manager'
+require 'netuitive_rails_agent/netuitive_logger'
+
+# load config and logger
+NetuitiveRailsAgent::ConfigManager.load_config
+NetuitiveRailsAgent::NetuitiveLogger.setup
+NetuitiveRailsAgent::ConfigManager.read_config
+
+require 'netuitive_rails_agent/api_interaction'
+require 'netuitive_rails_agent/controller_utils'
+require 'netuitive_rails_agent/error_utils'
+require 'netuitive_rails_agent/error_tracker'
+require 'netuitive_rails_agent/request_data'
+require 'netuitive_rails_agent/action_controller'
+require 'netuitive_rails_agent/active_record'
+require 'netuitive_rails_agent/action_view'
+require 'netuitive_rails_agent/action_mailer'
+require 'netuitive_rails_agent/active_support'
+require 'netuitive_rails_agent/active_job'
+require 'netuitive_rails_agent/sidekiq'
+require 'netuitive_rails_agent/gc'
+require 'netuitive_rails_agent/objectspace'
+require 'netuitive_rails_agent/scheduler'
 
 # subscribe to notifications
-interaction = ApiInteraction.new
-NetuitiveActionControllerSub.new(interaction).subscribe if RailsConfigManager.action_controller_enabled
-NetuitiveActiveRecordSub.new(interaction).subscribe if RailsConfigManager.active_record_enabled
-NetuitiveActionViewSub.new(interaction).subscribe if RailsConfigManager.action_view_enabled
-NetuitiveActionMailer.new(interaction).subscribe if RailsConfigManager.action_mailer_enabled
-NetuitiveActiveSupportSub.new(interaction).subscribe if RailsConfigManager.active_support_enabled
-NetuitiveActiveJobSub.new(interaction).subscribe if RailsConfigManager.active_job_enabled
+interaction = NetuitiveRailsAgent::ApiInteraction.new
+NetuitiveRailsAgent::ActionControllerSub.new(interaction).subscribe if NetuitiveRailsAgent::ConfigManager.action_controller_enabled
+NetuitiveRailsAgent::ActiveRecordSub.new(interaction).subscribe if NetuitiveRailsAgent::ConfigManager.active_record_enabled
+NetuitiveRailsAgent::ActionViewSub.new(interaction).subscribe if NetuitiveRailsAgent::ConfigManager.action_view_enabled
+NetuitiveRailsAgent::ActionMailerSub.new(interaction).subscribe if NetuitiveRailsAgent::ConfigManager.action_mailer_enabled
+NetuitiveRailsAgent::ActiveSupportSub.new(interaction).subscribe if NetuitiveRailsAgent::ConfigManager.active_support_enabled
+NetuitiveRailsAgent::ActiveJobSub.new(interaction).subscribe if NetuitiveRailsAgent::ConfigManager.active_job_enabled
 
 # start metrics that are collected on a schedule
-Scheduler.new(interaction).start_schedule if RailsConfigManager.gc_enabled || RailsConfigManager.object_space_enabled
+NetuitiveRailsAgent::Scheduler.new(interaction).start_schedule if NetuitiveRailsAgent::ConfigManager.gc_enabled || NetuitiveRailsAgent::ConfigManager.object_space_enabled
 
 # sidekiq
-SidekiqTracker.new.setup if RailsConfigManager.sidekiq_enabled
+NetuitiveRailsAgent::SidekiqTracker.new.setup if NetuitiveRailsAgent::ConfigManager.sidekiq_enabled
 
-RailsNetuitiveLogger.log.info 'Netuitive rails agent installed'
+NetuitiveRailsAgent::NetuitiveLogger.log.info 'Netuitive rails agent installed'
