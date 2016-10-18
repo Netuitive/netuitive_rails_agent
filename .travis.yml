@@ -5,7 +5,7 @@ install:
   - gem install rubocop haml-lint
   - gem install mocha
   - gem install actionpack
-  - gem install netuitive_ruby_api -v '>= 1.0.0'
+  - gem install netuitive_ruby_api -v '>= 1.0.1'
 script:
   - rubocop
   - rake test
