@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'netuitive_rails_agent'
-  s.version     = '1.0.0'
+  s.version     = '1.0.1'
   s.date        = '2016-10-17'
   s.summary     = "Rails metrics for Netuitive's API"
   s.description = "Automatically generates Rails metrics for submission to Netuitive's API"
@@ -11,6 +11,6 @@ Gem::Specification.new do |s|
   s.homepage    =
     'http://rubygems.org/gems/netuitive_rails_agent'
   s.license = 'Apache v2.0'
-  s.add_runtime_dependency 'netuitive_ruby_api', '>= 1.0.0'
-  s.add_development_dependency 'netuitived', '>= 0.10.0'
+  s.add_runtime_dependency 'netuitive_ruby_api', '>= 1.0.1'
+  s.add_development_dependency 'netuitived', '>= 1.0.1'
 end
