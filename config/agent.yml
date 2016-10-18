@@ -15,7 +15,7 @@ actionMailerEnabled: true #NETUITIVE_RAILS_ACTION_MAILER_ENABLED
 activeSupportEnabled: true #NETUITIVE_RAILS_ACTIVE_SUPPORT_ENABLED
 activeJobEnabled: true #NETUITIVE_RAILS_ACTIVE_JOB_ENABLED
 #injected instrumentation
-requestWrapperEnabled: true #NETUITIVE_RAILS_REQUEST_WRAPPER_ENABLED
+requestWrapperEnabled: false #NETUITIVE_RAILS_REQUEST_WRAPPER_ENABLED
 actionErrorsEnabled: true #NETUITIVE_RAILS_ACTION_ERRORS_ENABLED
 #interpreter metrics
 gcEnabled: true #NETUITIVE_RAILS_GC_ENABLED

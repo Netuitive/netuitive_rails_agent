@@ -1,3 +1,9 @@
+netuitive_rails_agent 1.0.2 (2016-10-17)
+-------------------------
+* turning request wrapping off by default
+* more fault tolerant if a queue time header isn't included when request wrapping is enabled
+* fixed a bug where error metric aren't sent if error events are disabled
+
 netuitive_rails_agent 1.0.1 (2016-10-17)
 -------------------------
 * refactoring of classes into gem namespace to avoid collisions
