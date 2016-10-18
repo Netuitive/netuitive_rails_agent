@@ -21,10 +21,10 @@ module NetuitiveRailsAgent
     def handle_error(exception, metrics = [], tags = {})
       NetuitiveRailsAgent::NetuitiveLogger.log.debug "received error: #{exception}"
       unless ignored_error?(exception)
+        @interaction = NetuitiveRailsAgent::ApiInteraction.new unless @interaction
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "#{exception} wasn't ignored"
         if NetuitiveRailsAgent::ConfigManager.capture_errors
           NetuitiveRailsAgent::NetuitiveLogger.log.debug "sending error: #{exception}"
-          @interaction = NetuitiveRailsAgent::ApiInteraction.new unless @interaction
           @interaction.exception_event(exception, exception.class, tags)
           NetuitiveRailsAgent::NetuitiveLogger.log.debug 'sent error'
         end
