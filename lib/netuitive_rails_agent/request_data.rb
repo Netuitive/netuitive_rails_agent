@@ -24,6 +24,7 @@ module NetuitiveRailsAgent
           start_time = start_time.nil? || header_time < start_time ? header_time : start_time
           NetuitiveRailsAgent::NetuitiveLogger.log.debug "queue start_time: #{start_time}"
         end
+        return nil if start_time.nil?
         return (Time.now.to_f - start_time) * 1000.0
       end
       nil
@@ -33,6 +34,10 @@ module NetuitiveRailsAgent
       return unless request
       begin
         queue_time = NetuitiveRailsAgent::RequestDataHook.header_start_time(request.headers)
+        if queue_time.nil?
+          NetuitiveRailsAgent::NetuitiveLogger.log.info 'no queue time header found for request'
+          return
+        end
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "queue_time: #{queue_time}"
         NetuitiveRailsAgent::NetuitiveLogger.log.debug 'sending queue_time metrics'
         NetuitiveRubyAPI.add_sample('action_controller.request.queue_time', queue_time)
