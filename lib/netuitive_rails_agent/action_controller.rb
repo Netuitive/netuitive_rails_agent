@@ -1,7 +1,7 @@
 ActionController::Base.class_eval do
-  include ErrorTrackerHook if NetuitiveRailsAgent::ConfigManager.action_errors_enabled
+  include NetuitiveRailsAgent::ErrorTrackerHook if NetuitiveRailsAgent::ConfigManager.action_errors_enabled
   if NetuitiveRailsAgent::ConfigManager.request_wrapper_enabled
-    include RequestDataHook
+    include NetuitiveRailsAgent::RequestDataHook
     before_action :netuitive_request_hook
   end
 end

@@ -1,16 +1,17 @@
-require 'netuitive_rails_agent/config_manager'
-require 'netuitive_rails_agent/netuitive_logger'
-
-# load config and logger
-ConfigManager.load_config
-NetuitiveLogger.setup
-ConfigManager.read_config
-
+require 'logger'
 require 'active_support'
 require 'action_controller'
 require 'action_mailer'
 require 'active_support/concern'
 require 'netuitive_ruby_api'
+require 'netuitive_rails_agent/config_manager'
+require 'netuitive_rails_agent/netuitive_logger'
+
+# load config and logger
+NetuitiveRailsAgent::ConfigManager.load_config
+NetuitiveRailsAgent::NetuitiveLogger.setup
+NetuitiveRailsAgent::ConfigManager.read_config
+
 require 'netuitive_rails_agent/api_interaction'
 require 'netuitive_rails_agent/controller_utils'
 require 'netuitive_rails_agent/error_utils'

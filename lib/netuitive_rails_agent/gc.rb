@@ -6,7 +6,10 @@ module NetuitiveRailsAgent
     end
 
     def collect
-      return unless GC::Profiler.enabled?
+      unless GC::Profiler.enabled?
+        NetuitiveRailsAgent::NetuitiveLogger.log.warn 'gc profiler not enabled'
+        return
+      end
       begin
           NetuitiveRailsAgent::NetuitiveLogger.log.debug 'collecting gc metrics'
           GC.stat.each do |key, value|
@@ -24,6 +27,7 @@ module NetuitiveRailsAgent
         rescue => e
           NetuitiveRailsAgent::NetuitiveLogger.log.error "exception during gc collection: message:#{e.message} backtrace:#{e.backtrace}"
         end
+      NetuitiveRailsAgent::NetuitiveLogger.log.debug 'finished collecting gc metrics'
     end
   end
 end

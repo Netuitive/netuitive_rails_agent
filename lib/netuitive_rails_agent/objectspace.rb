@@ -11,6 +11,7 @@ module NetuitiveRailsAgent
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "ObjectSpace.count_objects.#{key}"
         interaction.aggregate_metric("ObjectSpace.count_objects.#{key}", value)
       end
+      NetuitiveRailsAgent::NetuitiveLogger.log.debug 'finished collecting object space metrics'
     rescue => e
       NetuitiveRailsAgent::NetuitiveLogger.log.error "exception during object space collection: message:#{e.message} backtrace:#{e.backtrace}"
     end

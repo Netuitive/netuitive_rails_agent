@@ -13,14 +13,20 @@ module NetuitiveRailsAgent
       NetuitiveRailsAgent::NetuitiveLogger.log.debug 'starting schedule'
       Thread.new do
         loop do
-          collect_metrics
-          sleep(interval)
+          begin
+            collect_metrics
+            sleep_time = interval
+            NetuitiveRailsAgent::NetuitiveLogger.log.debug "scheduler sleeping for: #{sleep_time}"
+            sleep(sleep_time)
+          rescue => e
+            NetuitiveRailsAgent::NetuitiveLogger.log.error "error during schedule: #{e.message}, backtrace: #{e.backtrace}"
+          end
         end
       end
     end
 
     def interval
-      interval = interaction.netuitivedServer.interval
+      interval = interaction.interval
       interval = 60 if interval.nil?
       interval
     end

@@ -35,13 +35,13 @@ module NetuitiveRailsAgent
         queue_time = NetuitiveRailsAgent::RequestDataHook.header_start_time(request.headers)
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "queue_time: #{queue_time}"
         NetuitiveRailsAgent::NetuitiveLogger.log.debug 'sending queue_time metrics'
-        NetuitiveRailsAgent::NetuitiveRubyAPI.add_sample('action_controller.request.queue_time', queue_time)
+        NetuitiveRubyAPI.add_sample('action_controller.request.queue_time', queue_time)
         return unless netuitive_controller_name
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "sending queue_time metrics with netuitive_controller_name #{netuitive_controller_name}"
-        NetuitiveRailsAgent::NetuitiveRubyAPI.add_sample("action_controller.#{netuitive_controller_name}.request.queue_time", queue_time)
+        NetuitiveRubyAPI.add_sample("action_controller.#{netuitive_controller_name}.request.queue_time", queue_time)
         return unless netuitive_action_name
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "sending queue_time metrics with netuitive_action_name #{netuitive_action_name}"
-        NetuitiveRailsAgent::NetuitiveRubyAPI.add_sample("action_controller.#{netuitive_controller_name}.#{netuitive_action_name}.request.queue_time", queue_time)
+        NetuitiveRubyAPI.add_sample("action_controller.#{netuitive_controller_name}.#{netuitive_action_name}.request.queue_time", queue_time)
       rescue => e
         NetuitiveRailsAgent::NetuitiveLogger.log.error "exception during request tracking: message:#{e.message} backtrace:#{e.backtrace}"
       end

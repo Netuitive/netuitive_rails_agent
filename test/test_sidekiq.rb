@@ -18,9 +18,9 @@ module NetuitiveRailsAgent
       @interaction.expects(:aggregate_metric).with('sidekiq.test_queue.WrappedWorker.job.count', 1)
       @chain_tracker.call(NetuitiveRailsAgent::TestWorker.new, { 'wrapped' => 'WrappedWorker', 'queue' => 'test_queue' }, nil) {}
       # not wrapped
-      @interaction.expects(:aggregate_metric).with('sidekiq.TestWorker.job.count', 1)
+      @interaction.expects(:aggregate_metric).with('sidekiq.NetuitiveRailsAgent::TestWorker.job.count', 1)
       @interaction.expects(:aggregate_metric).with('sidekiq.test_queue.job.count', 1)
-      @interaction.expects(:aggregate_metric).with('sidekiq.test_queue.TestWorker.job.count', 1)
+      @interaction.expects(:aggregate_metric).with('sidekiq.test_queue.NetuitiveRailsAgent::TestWorker.job.count', 1)
       @chain_tracker.call(NetuitiveRailsAgent::TestWorker.new, { 'queue' => 'test_queue' }, nil) {}
     end
 
