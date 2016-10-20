@@ -9,7 +9,7 @@ module NetuitiveRailsAgent
     included do
       NetuitiveRailsAgent::NetuitiveLogger.log.debug 'ErrorTracker included'
       rescue_from Exception do |exception|
-        begin
+        NetuitiveRailsAgent::ErrorLogger.guard('error during ErrorTrackerHook') do
           tags = {
             URI: netuitive_request_uri,
             Controller: netuitive_controller_name,
@@ -23,8 +23,6 @@ module NetuitiveRailsAgent
             end
           end
           handle_error(exception, metrics, tags)
-        rescue => e
-          NetuitiveRailsAgent::NetuitiveLogger.log.error "exception during controller error tracking: message:#{e.message} backtrace:#{e.backtrace}"
         end
         raise exception
       end
