@@ -9,30 +9,32 @@ module NetuitiveRailsAgent
     ].freeze
 
     def self.header_start_time(headers)
-      if headers
-        start_time = nil
-        HEADERS_NAMES.each do |header_name|
-          header = headers[header_name]
-          next if header.nil?
-          match = /\d+(\.\d{1,2})?/.match(header)
-          if match.nil?
-            NetuitiveRailsAgent::NetuitiveLogger.log.error "queue time header value #{header} is not recognized"
-            next
+      NetuitiveRailsAgent::ErrorLogger.guard('error during header_start_time') do
+        if headers
+          start_time = nil
+          HEADERS_NAMES.each do |header_name|
+            header = headers[header_name]
+            next if header.nil?
+            match = /\d+(\.\d{1,2})?/.match(header)
+            if match.nil?
+              NetuitiveRailsAgent::NetuitiveLogger.log.error "queue time header value #{header} is not recognized"
+              next
+            end
+            header_time = match.to_s.to_f / NetuitiveRailsAgent::ConfigManager.queue_time_divisor
+            NetuitiveRailsAgent::NetuitiveLogger.log.debug "queue header_time: #{header_time}"
+            start_time = start_time.nil? || header_time < start_time ? header_time : start_time
+            NetuitiveRailsAgent::NetuitiveLogger.log.debug "queue start_time: #{start_time}"
           end
-          header_time = match.to_s.to_f / NetuitiveRailsAgent::ConfigManager.queue_time_divisor
-          NetuitiveRailsAgent::NetuitiveLogger.log.debug "queue header_time: #{header_time}"
-          start_time = start_time.nil? || header_time < start_time ? header_time : start_time
-          NetuitiveRailsAgent::NetuitiveLogger.log.debug "queue start_time: #{start_time}"
+          return nil if start_time.nil?
+          return (Time.now.to_f - start_time) * 1000.0
         end
-        return nil if start_time.nil?
-        return (Time.now.to_f - start_time) * 1000.0
       end
       nil
     end
 
     def netuitive_request_hook
       return unless request
-      begin
+      NetuitiveRailsAgent::ErrorLogger.guard('error during netuitive_request_hook') do
         queue_time = NetuitiveRailsAgent::RequestDataHook.header_start_time(request.headers)
         if queue_time.nil?
           NetuitiveRailsAgent::NetuitiveLogger.log.info 'no queue time header found for request'
@@ -47,8 +49,6 @@ module NetuitiveRailsAgent
         return unless netuitive_action_name
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "sending queue_time metrics with netuitive_action_name #{netuitive_action_name}"
         NetuitiveRubyAPI.add_sample("action_controller.#{netuitive_controller_name}.#{netuitive_action_name}.request.queue_time", queue_time)
-      rescue => e
-        NetuitiveRailsAgent::NetuitiveLogger.log.error "exception during request tracking: message:#{e.message} backtrace:#{e.backtrace}"
       end
     end
   end

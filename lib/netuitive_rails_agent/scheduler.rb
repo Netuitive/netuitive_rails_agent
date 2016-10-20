@@ -13,13 +13,11 @@ module NetuitiveRailsAgent
       NetuitiveRailsAgent::NetuitiveLogger.log.debug 'starting schedule'
       Thread.new do
         loop do
-          begin
+          NetuitiveRailsAgent::ErrorLogger.guard('error during schedule') do
             collect_metrics
             sleep_time = interval
             NetuitiveRailsAgent::NetuitiveLogger.log.debug "scheduler sleeping for: #{sleep_time}"
             sleep(sleep_time)
-          rescue => e
-            NetuitiveRailsAgent::NetuitiveLogger.log.error "error during schedule: #{e.message}, backtrace: #{e.backtrace}"
           end
         end
       end
@@ -32,13 +30,12 @@ module NetuitiveRailsAgent
     end
 
     def collect_metrics
-      NetuitiveRailsAgent::NetuitiveLogger.log.debug 'collecting schedule metrics'
-      begin
+      NetuitiveRailsAgent::NetuitiveLogger.log.debug 'start collecting schedule metrics'
+      NetuitiveRailsAgent::ErrorLogger.guard('error during collect_metrics') do
         gc_stats_collector.collect if NetuitiveRailsAgent::ConfigManager.gc_enabled
         object_space_collector.collect if NetuitiveRailsAgent::ConfigManager.object_space_enabled
-      rescue => e
-        NetuitiveRailsAgent::NetuitiveLogger.log.error "unable to collect schedule metrics: message:#{e.message} backtrace:#{e.backtrace}"
       end
+      NetuitiveRailsAgent::NetuitiveLogger.log.debug 'finshed collecting schedule metrics'
     end
   end
 end
