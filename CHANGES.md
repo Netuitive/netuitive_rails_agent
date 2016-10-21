@@ -1,3 +1,7 @@
+netuitive_rails_agent 1.0.3 (2016-10-21)
+-------------------------
+* error proofing
+
 netuitive_rails_agent 1.0.2 (2016-10-17)
 -------------------------
 * turning request wrapping off by default
