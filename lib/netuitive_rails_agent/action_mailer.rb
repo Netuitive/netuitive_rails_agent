@@ -15,15 +15,19 @@ module NetuitiveRailsAgent
     end
 
     def receive(*args)
-      event = ActiveSupport::Notifications::Event.new(*args)
-      mailer = event.payload[:mailer].to_s
-      interaction.aggregate_metric("action_mailer.#{mailer}.receive", 1)
+      NetuitiveRailsAgent::ErrorLogger.guard('error during stop_server') do
+        event = ActiveSupport::Notifications::Event.new(*args)
+        mailer = event.payload[:mailer].to_s
+        interaction.aggregate_metric("action_mailer.#{mailer}.receive", 1)
+      end
     end
 
     def deliver(*args)
-      event = ActiveSupport::Notifications::Event.new(*args)
-      mailer = event.payload[:mailer].to_s
-      interaction.aggregate_metric("action_mailer.#{mailer}.deliver", 1)
+      NetuitiveRailsAgent::ErrorLogger.guard('error during deliver') do
+        event = ActiveSupport::Notifications::Event.new(*args)
+        mailer = event.payload[:mailer].to_s
+        interaction.aggregate_metric("action_mailer.#{mailer}.deliver", 1)
+      end
     end
   end
 end
