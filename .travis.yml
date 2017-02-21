@@ -11,3 +11,11 @@ script:
   - rake test
 notifications:
   slack: netuitive:ZnQK4zdxmtXMsrquZrQrqtfe
+deploy:
+  provider: rubygems
+  api_key:
+    secure: aY43bmdFdmQoopK8sN22gXD0bYb+hK5B1SrWnnXzq1oSqR4tyVzyZyfgOoin99QQATLppTTBMaDsKTdJ/oXKU0fxWJrtMQspXQ2fkmT9aiOk2pAotWzl+lM13X74o65iyEC2JmGjNk+1bJ3ldb5EkdPH+j2tKniCJY8zwFX1gX1RXaSI/db5DwxbjQRayVp81J/lHOkO/MNke6Hj1YWv0TH0+ATLTUXkV9tmxQkyMFuG36iWd7fNiR2ZFxVn5Lg+vr2CaxDn2C5ZLemtCFbE/VT/XDixej6Sd94rcz8FyQ86KNLCXBVQLHLA+lAQKzUfWnTN6U0N6SFW3SiNz0cayWbii5APsDeXvY+WDv+TekxIHCcMk3qPy7eEImLywLh0NQmrq21FbYhgRIPExm8BZpNGdK6r2lBc/ucvZbVmCI3hE/UBL7fyQ+EoriRiMqzMhwEYbyzQtMjzWDDP0nEpU5zJDsx8ksslN57oyfIVpIA16cqf849jhYP2Y/kSAHOkZo3mOE4hlpg67K4uy3FfrrOGcKx1T7SeY2DrQ5we/AQ8wO0TNz2nPQgh9vSKR2/opyqNVdjbEWKRL4GcYraWjv+jvH4Fd7FWO7JrdDpn2meS4Ptj9M5X391jzl6YJ/y8PfkbAaz9yOE1ksKRVKJ26ChOYxOC8/J++s2R7W3vB98=
+  gem: netuitive_rails_agent
+  on:
+    tags: true
+    repo: Netuitive/netuitive_rails_agent
