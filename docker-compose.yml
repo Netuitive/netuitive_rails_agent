@@ -1,0 +1,7 @@
+rails_example:
+  build: .
+  container_name: rails-example
+  ports:
+    - "3000:3000"
+  environment:
+    - ELEMENT_NAME=example-rails-application
