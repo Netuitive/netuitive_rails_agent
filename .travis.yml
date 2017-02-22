@@ -2,10 +2,7 @@ language: ruby
 rvm:
   - 2.2.2
 install:
-  - gem install rubocop haml-lint
-  - gem install mocha
-  - gem install actionpack
-  - gem install netuitive_ruby_api -v '>= 1.0.1'
+  - bundle install
 script:
   - rubocop
   - rake test
