@@ -3,5 +3,6 @@ rails_example:
   container_name: rails-example
   ports:
     - "3000:3000"
+  env_file: .env
   environment:
     - ELEMENT_NAME=example-rails-application
