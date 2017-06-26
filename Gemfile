@@ -5,5 +5,5 @@ source 'https://rubygems.org' do
   gem 'mocha'
   gem 'netuitive_ruby_api', '>= 1.0.1'
   gem 'rubocop', '0.47.1'
-  gem 'test-unit'
+  gem 'test-unit', '3.2.4'
 end
