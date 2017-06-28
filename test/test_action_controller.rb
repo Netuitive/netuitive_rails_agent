@@ -24,6 +24,7 @@ require 'netuitive_rails_agent/sidekiq'
 module NetuitiveRailsAgent
   class ActionControllerTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       @interaction = mock
       @sub = NetuitiveRailsAgent::ActionControllerSub.new(@interaction)
       NetuitiveRailsAgent::NetuitiveLogger.setup

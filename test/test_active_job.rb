@@ -1,6 +1,7 @@
 module NetuitiveRailsAgent
   class ActiveJobTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       @interaction = mock
       @sub = NetuitiveRailsAgent::ActiveJobSub.new(@interaction)
     end

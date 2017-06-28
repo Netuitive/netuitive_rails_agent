@@ -1,6 +1,7 @@
 module NetuitiveRailsAgent
   class ActiveRecordTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       @interaction = mock
       @sub = NetuitiveRailsAgent::ActiveRecordSub.new(@interaction)
     end

@@ -1,6 +1,7 @@
 module NetuitiveRailsAgent
   class ObjectSpaceTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       @interaction = NetuitiveRailsAgent::ApiInteraction.new
       @os = NetuitiveRailsAgent::ObjectSpaceStatsCollector.new(@interaction)
     end
