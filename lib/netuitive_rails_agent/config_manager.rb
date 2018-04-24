@@ -101,6 +101,7 @@ module NetuitiveRailsAgent
         @action_errors_enabled = boolean_property('actionErrorsEnabled', 'NETUITIVE_RAILS_ACTION_ERRORS_ENABLED')
         @gc_enabled = boolean_property('gcEnabled', 'NETUITIVE_RAILS_GC_ENABLED')
         @object_space_enabled = boolean_property('objectSpaceEnabled', 'NETUITIVE_RAILS_OBJECT_SPACE_ENABLED')
+        action_controller_whitelist = property('actionControllerWhitelist', 'NETUITIVE_RAILS_ACTION_CONTROLLER_WHITELIST')
 
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "read config file. Results:
           debugLevel: #{debug_level_string},
