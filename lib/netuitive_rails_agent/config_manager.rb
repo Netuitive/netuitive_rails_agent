@@ -29,6 +29,8 @@ module NetuitiveRailsAgent
 
       attr_accessor :object_space_enabled
 
+      attr_accessor :action_controller_whitelist
+
       attr_accessor :data
 
       def property(name, var, default = nil)
@@ -118,7 +120,8 @@ module NetuitiveRailsAgent
           request_wrapper_enabled: #{request_wrapper_enabled},
           action_errors_enabled: #{action_errors_enabled},
           gc_enabled: #{gc_enabled},
-          object_space_enabled: #{object_space_enabled}"
+          object_space_enabled: #{object_space_enabled}
+          action_controller_whitelist: #{action_controller_whitelist}"
       end
     end
   end
