@@ -29,7 +29,8 @@ RUN mv *.gem /opt/app/netuitive-example/
 WORKDIR /opt/app/netuitive-example
 
 RUN echo "gem 'netuitive_rails_agent'" >> Gemfile
-RUN bundle install
+RUN gem install *.gem
+RUN bundle install --local
 
 ENV RUBY_KEY CHANGEME
 ENV API_URL api.app.netuitive.com
