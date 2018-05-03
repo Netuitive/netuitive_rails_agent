@@ -1,6 +1,7 @@
 module NetuitiveRailsAgent
   class ActionViewTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       @interaction = mock
       @sub = NetuitiveRailsAgent::ActionViewSub.new(@interaction)
     end

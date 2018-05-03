@@ -29,6 +29,8 @@ module NetuitiveRailsAgent
 
       attr_accessor :object_space_enabled
 
+      attr_accessor :action_controller_whitelist
+
       attr_accessor :data
 
       def property(name, var, default = nil)
@@ -101,6 +103,7 @@ module NetuitiveRailsAgent
         @action_errors_enabled = boolean_property('actionErrorsEnabled', 'NETUITIVE_RAILS_ACTION_ERRORS_ENABLED')
         @gc_enabled = boolean_property('gcEnabled', 'NETUITIVE_RAILS_GC_ENABLED')
         @object_space_enabled = boolean_property('objectSpaceEnabled', 'NETUITIVE_RAILS_OBJECT_SPACE_ENABLED')
+        @action_controller_whitelist = property('actionControllerWhitelist', 'NETUITIVE_RAILS_ACTION_CONTROLLER_WHITELIST')
 
         NetuitiveRailsAgent::NetuitiveLogger.log.debug "read config file. Results:
           debugLevel: #{debug_level_string},
@@ -117,7 +120,8 @@ module NetuitiveRailsAgent
           request_wrapper_enabled: #{request_wrapper_enabled},
           action_errors_enabled: #{action_errors_enabled},
           gc_enabled: #{gc_enabled},
-          object_space_enabled: #{object_space_enabled}"
+          object_space_enabled: #{object_space_enabled}
+          action_controller_whitelist: #{action_controller_whitelist}"
       end
     end
   end

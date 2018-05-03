@@ -4,6 +4,7 @@ module NetuitiveRailsAgent
 
   class SidekiqTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       @interaction = mock
       @chain_tracker = NetuitiveRailsAgent::SidekiqTracker::ChainTracker.new
       @chain_tracker.interaction = @interaction

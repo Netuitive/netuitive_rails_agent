@@ -1,6 +1,7 @@
 module NetuitiveRailsAgent
   class GCTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       GC::Profiler.enable
       @interaction = NetuitiveRailsAgent::ApiInteraction.new
       @gc = NetuitiveRailsAgent::GCStatsCollector.new(@interaction)

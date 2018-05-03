@@ -29,11 +29,12 @@ RUN mv *.gem /opt/app/netuitive-example/
 WORKDIR /opt/app/netuitive-example
 
 RUN echo "gem 'netuitive_rails_agent'" >> Gemfile
-RUN bundle install
+RUN gem install *.gem
+RUN bundle install --local
 
 ENV RUBY_KEY CHANGEME
 ENV API_URL api.app.netuitive.com
 
 EXPOSE 3000
 
-CMD NETUITIVED_API_ID=${RUBY_KEY} NETUITIVED_ELEMENT_NAME=${ELEMENT_NAME} NETUITIVED_BASE_ADDR=${API_URL} netuitived start && bundle exec rails server -b0.0.0.0
+CMD NETUITIVED_API_ID=${RUBY_KEY} NETUITIVED_ELEMENT_NAME=${ELEMENT_NAME} NETUITIVED_BASE_ADDR=${API_URL} netuitived start && bundle exec rails server -b 0.0.0.0

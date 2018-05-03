@@ -3,6 +3,7 @@ module NetuitiveRailsAgent
     def setup
       @interaction = mock
       @sub = NetuitiveRailsAgent::ActionMailerSub.new(@interaction)
+      NetuitiveRailsAgent::ConfigManager.load_config
     end
 
     def test_receive

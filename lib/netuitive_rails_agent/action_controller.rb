@@ -49,17 +49,20 @@ module NetuitiveRailsAgent
         event = ActiveSupport::Notifications::Event.new(*args)
         controller = event.payload[:controller].to_s
         action = event.payload[:action].to_s
-        interaction.add_sample("action_controller.#{controller}.#{action}.request.total_duration", event.duration)
-        interaction.add_sample("action_controller.#{controller}.#{action}.request.query_time", event.payload[:db_runtime])
-        interaction.add_sample("action_controller.#{controller}.#{action}.request.view_time", event.payload[:view_runtime])
-        interaction.add_sample("action_controller.#{controller}.request.total_duration", event.duration)
-        interaction.add_sample("action_controller.#{controller}.request.query_time", event.payload[:db_runtime])
-        interaction.add_sample("action_controller.#{controller}.request.view_time", event.payload[:view_runtime])
+        ac_whitelist_string = NetuitiveRailsAgent::ConfigManager.action_controller_whitelist
+        if controller =~ /#{ac_whitelist_string}/
+          interaction.add_sample("action_controller.#{controller}.#{action}.request.total_duration", event.duration)
+          interaction.add_sample("action_controller.#{controller}.#{action}.request.query_time", event.payload[:db_runtime])
+          interaction.add_sample("action_controller.#{controller}.#{action}.request.view_time", event.payload[:view_runtime])
+          interaction.add_sample("action_controller.#{controller}.request.total_duration", event.duration)
+          interaction.add_sample("action_controller.#{controller}.request.query_time", event.payload[:db_runtime])
+          interaction.add_sample("action_controller.#{controller}.request.view_time", event.payload[:view_runtime])
+          interaction.aggregate_metric("action_controller.#{controller}.#{action}.total_requests", 1)
+          interaction.aggregate_metric("action_controller.#{controller}.total_requests", 1)
+        end
         interaction.add_sample('action_controller.request.total_duration', event.duration)
         interaction.add_sample('action_controller.request.query_time', event.payload[:db_runtime])
         interaction.add_sample('action_controller.request.view_time', event.payload[:view_runtime])
-        interaction.aggregate_metric("action_controller.#{controller}.#{action}.total_requests", 1)
-        interaction.aggregate_metric("action_controller.#{controller}.total_requests", 1)
         interaction.aggregate_metric('action_controller.total_requests', 1)
       end
     end

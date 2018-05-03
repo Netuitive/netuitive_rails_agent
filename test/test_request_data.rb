@@ -1,6 +1,7 @@
 module NetuitiveRailsAgent
   class RequestDataTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       NetuitiveRailsAgent::ConfigManager.queue_time_divisor = 1.0
     end
 

@@ -1,6 +1,7 @@
 module NetuitiveRailsAgent
   class ErrorUtilsTest < Test::Unit::TestCase
     def setup
+      NetuitiveRailsAgent::ConfigManager.load_config
       self.class.send(:include, NetuitiveRailsAgent::ErrorUtils)
       @interaction = mock
     end
