@@ -1,3 +1,12 @@
+netuitive_rails_agent 1.2.0 (2016-10-21)
+-------------------------
+* Added whitelist for tuning action controller collection.
+
+netuitive_rails_agent 1.0.4 (2016-10-21)
+-------------------------
+* Build improvements, including automatic deployment.
+* Added docker example.
+
 netuitive_rails_agent 1.0.3 (2016-10-21)
 -------------------------
 * error proofing
