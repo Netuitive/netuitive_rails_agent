@@ -50,7 +50,7 @@ module NetuitiveRailsAgent
         controller = event.payload[:controller].to_s
         action = event.payload[:action].to_s
         ac_whitelist_string = NetuitiveRailsAgent::ConfigManager.action_controller_whitelist
-        if controller =~ /#{ac_whitelist_string}|test_controller/
+        if controller =~ /#{ac_whitelist_string}/
           interaction.add_sample("action_controller.#{controller}.#{action}.request.total_duration", event.duration)
           interaction.add_sample("action_controller.#{controller}.#{action}.request.query_time", event.payload[:db_runtime])
           interaction.add_sample("action_controller.#{controller}.#{action}.request.view_time", event.payload[:view_runtime])
