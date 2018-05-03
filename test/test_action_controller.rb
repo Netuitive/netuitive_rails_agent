@@ -31,6 +31,7 @@ module NetuitiveRailsAgent
     end
 
     def test_process_action
+      NetuitiveRailsAgent::ConfigManager.action_controller_whitelist = 'test_controller'
       @interaction.expects(:add_sample).with('action_controller.test_controller.test_action.request.total_duration', 1000.0)
       @interaction.expects(:add_sample).with('action_controller.test_controller.test_action.request.query_time', 3)
       @interaction.expects(:add_sample).with('action_controller.test_controller.test_action.request.view_time', 4)
@@ -44,6 +45,11 @@ module NetuitiveRailsAgent
       @interaction.expects(:aggregate_metric).with('action_controller.test_controller.total_requests', 1)
       @interaction.expects(:aggregate_metric).with('action_controller.total_requests', 1)
       @sub.process_action(nil, 1, 2, nil, controller: 'test_controller', action: 'test_action', db_runtime: 3, view_runtime: 4)
+      @interaction.expects(:add_sample).with('action_controller.request.total_duration', 1000.0)
+      @interaction.expects(:add_sample).with('action_controller.request.query_time', 3)
+      @interaction.expects(:add_sample).with('action_controller.request.view_time', 4)
+      @interaction.expects(:aggregate_metric).with('action_controller.total_requests', 1)
+      @sub.process_action(nil, 1, 2, nil, controller: 'fail_controller', action: 'fail_action', db_runtime: 3, view_runtime: 4)
     end
 
     def test_write_fragment

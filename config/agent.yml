@@ -26,6 +26,9 @@ sidekiqEnabled: false #NETUITIVE_RAILS_SIDEKIQ_ENABLED toggle for collection of 
 sendErrorEvents: false #NETUITIVE_RAILS_SEND_ERROR_EVENTS toggle for sending exceptions to netuitived for export as external events.
 
 #feature configs
+actionControllerWhitelist: .* #NETUITIVE_RAILS_ACTION_CONTROLLER_WHITELIST this is required to filter out action controller metrics
+#Example: ^Rails::WelcomeController$
+#The whitelist needs to be valid RegEx
 queueTimeUnits: 1 #NETUITIVE_RAILS_QUEUE_TIME_UNITS this is the divisor required to get the queue time metric into seconds. examples: seconds: 1, milliseconds: 1000, microseconds: 1000000.
 ignoredErrors: #NETUITIVE_RAILS_IGNORED_ERRORS list of exceptions to ignore. should be provided in the following yaml format:
 #ignoredErrors:
