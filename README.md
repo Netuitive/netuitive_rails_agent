@@ -1,9 +1,9 @@
 Netuitive Rails Agent
 ======================
 
-The Netuitive Rails Agent creates default rails metrics to be sent to NetuitiveD using the netuitive_ruby_api gem. The Netuitive Rails Agent is meant to work in conjunction with the [netuitive_ruby_api](https://rubygems.org/gems/netuitive_ruby_api) gem and NetuitiveD to help [Netuitive](https://www.netuitive.com) monitor your Ruby applications.
+The Netuitive Rails Agent creates default rails metrics to be sent to NetuitiveD using the netuitive_ruby_api gem. The Netuitive Rails Agent is meant to work in conjunction with the [netuitive_ruby_api](https://rubygems.org/gems/netuitive_ruby_api) gem and NetuitiveD to help [Virtana](https://www.virtana.com/products/cloudwisdom/) monitor your Ruby applications.
 
-For more information on the Netuitive Rails Agent, see our Ruby agent [help docs](https://docs.virtana.com/en/ruby-agent.html), or contact Netuitive support at [support@netuitive.com](mailto:support@netuitive.com).
+For more information on the Netuitive Rails Agent, see our Ruby agent [help docs](https://docs.virtana.com/en/ruby-agent.html), or contact Netuitive support at [cloudwisdom.support@virtana.com](mailto:cloudwisdom.support@virtana.com).
 
 Requirements
 -------------
