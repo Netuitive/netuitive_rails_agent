@@ -24,7 +24,7 @@ Installing the Netuitive Rails Agent
 Included in this project are Docker and Docker Compose files for easy testing of this application. To run an example Rails app with the Netuitive Rails Agent monitoring it perform the following steps:
 
 1. [Sign Up](https://try.cloudwisdom.virtana.com/) for a Netuitive account if you don't already have one
-1. Copy the `example.env` file to `.env` and replace the `RUBY_KEY` variable with your Ruby API key from the [Virtana Integrations page](https://try.cloudwisdom.virtana.com/)
+1. Copy the `example.env` file to `.env` and replace the `RUBY_KEY` variable with your Ruby API key from the [CloudWisdom Integrations page](https://try.cloudwisdom.virtana.com/)
 1. Run `docker-compose up -d`
 1. Access the example Rails application by going to http://localhost:3000 (or the IP address of your Docker host)
 1. View your Virtana inventory for the new **example-rails-application** element (the name is configurable in the `docker-compose.yml` file)
