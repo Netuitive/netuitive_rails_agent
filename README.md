@@ -27,4 +27,4 @@ Included in this project are Docker and Docker Compose files for easy testing of
 1. Copy the `example.env` file to `.env` and replace the `RUBY_KEY` variable with your Ruby API key from the [CloudWisdom Integrations page](https://try.cloudwisdom.virtana.com/)
 1. Run `docker-compose up -d`
 1. Access the example Rails application by going to http://localhost:3000 (or the IP address of your Docker host)
-1. View your Virtana inventory for the new **example-rails-application** element (the name is configurable in the `docker-compose.yml` file)
+1. View your CloudWisdom inventory for the new **example-rails-application** element (the name is configurable in the `docker-compose.yml` file)
